@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="mn">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Хэрэглэгчийн Профайл — Сайжруулсан</title>
+  <style>
+    :root{
+      --bg: #f6f8fb;
+      --card: #ffffff;
+      --muted: #6b7280;
+      --text: #0f172a;
+      --glass: rgba(255,255,255,0.6);
+      --accent: #2563eb;
+      --accent-2: #7c3aed;
+      --success: #059669;
+      --danger: #ef4444;
+    }
+    [data-theme='dark']{
+      --bg:#081127; --card:#0b1220; --muted:#98a0b3; --text:#e6eefb; --glass: rgba(255,255,255,0.04);
+    }
+    .theme-azure{ --accent:#2563eb; --accent-2:#60a5fa }
+    .theme-purple{ --accent:#7c3aed; --accent-2:#a78bfa }
+    .theme-green{ --accent:#059669; --accent-2:#34d399 }
+    .theme-coral{ --accent:#f97316; --accent-2:#fb923c }
+    .theme-rose{  --accent:#ec4899; --accent-2:#f472b6 }
+    *{box-sizing:border-box}
+    body{font-family:Inter,system-ui,-apple-system,"Segoe UI",Roboto;margin:0;min-height:100vh;background:linear-gradient(180deg,var(--bg),#eef2ff);color:var(--text);padding:28px;display:flex;justify-content:center;}
+    .container{width:100%;max-width:1100px;display:grid;grid-template-columns:360px 1fr;gap:22px}
+    @media(max-width:920px){.container{grid-template-columns:1fr;padding:18px}}
+    .panel{background:var(--card);border-radius:14px;padding:18px;box-shadow:0 10px 30px rgba(2,6,23,0.06);}
+    .profile-card{display:flex;flex-direction:column;gap:12px;align-items:center;text-align:center}
+    .avatar{width:110px;height:110px;border-radius:18px;background:linear-gradient(135deg,var(--accent),var(--accent-2));display:flex;align-items:center;justify-content:center;color:white;font-weight:700;font-size:34px;box-shadow:0 8px 20px rgba(0,0,0,0.08);overflow:hidden}
+    .avatar img{width:100%;height:100%;object-fit:cover;display:block}
+    h2.title{margin:0;font-size:20px}
+    .meta{color:var(--muted);font-size:14px}
+    .actions{display:flex;gap:8px;width:100%}
+    .btn{flex:1;padding:10px;border-radius:10px;border:0;background:var(--accent);color:white;font-weight:600;cursor:pointer}
+    .btn.ghost{background:transparent;border:1px solid rgba(15,23,42,0.06);color:var(--text)}
+    .small{font-size:13px;color:var(--muted)}
+    .section{margin-bottom:14px}
+    .card-list, .logs, .payments{display:flex;flex-direction:column;gap:10px}
+    .card-item{display:flex;justify-content:space-between;align-items:center;padding:12px;border-radius:10px;background:linear-gradient(90deg,rgba(37,99,235,0.06),rgba(124,58,237,0.02));}
+    .card-item .number{font-weight:700;letter-spacing:1px}
+    .form-row{display:flex;gap:10px}
+    .form-row input{flex:1;padding:10px;border-radius:8px;border:1px solid rgba(15,23,42,0.06)}
+    table{width:100%;border-collapse:collapse;font-size:14px}
+    th,td{padding:10px;text-align:left;border-bottom:1px solid rgba(15,23,42,0.04)}
+    .chip{display:inline-flex;padding:6px 10px;border-radius:999px;font-weight:600;background:rgba(15,23,42,0.04)}
+    .toolbar{display:flex;gap:8px;align-items:center;justify-content:space-between}
+    .theme-controls{display:flex;gap:8px;align-items:center}
+    .swatch{width:34px;height:34px;border-radius:8px;cursor:pointer;border:2px solid transparent}
+    .swatch.selected{outline:3px solid rgba(0,0,0,0.06)}
+    .swatch.azure{background:linear-gradient(135deg,#2563eb,#60a5fa)}
+    .swatch.purple{background:linear-gradient(135deg,#7c3aed,#a78bfa)}
+    .swatch.green{background:linear-gradient(135deg,#059669,#34d399)}
+    .swatch.coral{background:linear-gradient(135deg,#f97316,#fb923c)}
+    .swatch.rose{background:linear-gradient(135deg,#ec4899,#f472b6)}
+    .muted-note{color:var(--muted);font-size:13px}
+    .danger{color:var(--danger);font-weight:700}
+    .success{color:var(--success);font-weight:700}
+    .admin-banner{background:linear-gradient(90deg,rgba(255,244,229,0.9),rgba(255,249,236,0.8));border-left:4px solid #f59e0b;padding:12px;border-radius:8px}
+  </style>
+</head>
+<body>
+  <div class="container theme-azure" id="app">
+    <div class="panel profile-card">
+      <div class="avatar" id="avatar">TU</div>
+      <input type="file" id="avatarInput" accept="image/*" style="display:none" />
+      <div style="display:flex;gap:8px;width:100%">
+        <button class="btn ghost" id="uploadBtn">Зураг оруулах</button>
+        <button class="btn" id="removeAvatar">Устгах</button>
+      </div>
+
+      <h2 class="title" id="nameDisplay">Tuvshoo</h2>
+      <div class="meta" id="emailDisplay">tuvshoo@mail.com</div>
+      <div class="meta" id="phoneDisplay">(+976) 9999-9999</div>
+
+      <div style="width:100%">
+        <div class="actions">
+          <button class="btn" id="editBtn">Профайл засвар</button>
+          <button class="btn ghost" id="logoutBtn">Гарах</button>
+        </div>
+        <div style="margin-top:10px;display:flex;gap:8px">
+          <button class="btn ghost" id="homeBtn">Үндсэн хуудас</button>
+          <button class="btn ghost" id="contactAdminBtn">Админтай холбогдох</button>
+        </div>
+      </div>
+
+      <div style="width:100%;margin-top:12px;text-align:left">
+        <div class="small">Өнгөний сэдэв:</div>
+        <div style="display:flex;gap:8px;margin-top:8px" class="theme-controls">
+          <div class="swatch azure selected" data-theme="azure"></div>
+          <div class="swatch purple" data-theme="purple"></div>
+          <div class="swatch green" data-theme="green"></div>
+          <div class="swatch coral" data-theme="coral"></div>
+          <div class="swatch rose" data-theme="rose"></div>
+        </div>
+        <div style="margin-top:10px;display:flex;gap:8px;align-items:center">
+          <label class="small"><input type="checkbox" id="darkToggle"/> Dark mode</label>
+        </div>
+
+        <div style="margin-top:10px">
+          <label class="small">Хэл:</label>
+          <select id="langSelect">
+            <option value="mn">Монгол</option>
+            <option value="en">English</option>
+            <option value="ja">日本語</option>
+          </select>
+        </div>
+      </div>
+    </div>
+
+    <div>
+      <div class="panel section">
+        <div class="toolbar">
+          <h3 id="profileTitle">Профайл мэдээлэл</h3>
+          <div class="muted-note">Сүүлд шинэчилсэн: <span id="lastUpdated">—</span></div>
+        </div>
+
+        <div style="margin-top:10px;display:grid;grid-template-columns:1fr 1fr;gap:10px">
+          <input id="inputName" placeholder="Нэр" />
+          <input id="inputEmail" placeholder="Имэйл" />
+          <input id="inputPhone" placeholder="Утас" />
+        </div>
+        <div style="display:flex;gap:8px;margin-top:12px">
+          <button class="btn" id="saveProfile">Хадгалах</button>
+          <button class="btn ghost" id="cancelEdit">Цуцлах</button>
+        </div>
+      </div>
+
+      <div class="panel section" id="paymentSection">
+        <h3>Картын мэдээлэл / Төлбөр</h3>
+        <div class="card-list" id="cardList"></div>
+
+        <div style="margin-top:8px" class="form-row">
+          <input id="cardNumber" placeholder="Картын дугаар (XXXX XXXX XXXX XXXX)" maxlength="19" />
+          <input id="cardHolder" placeholder="Эзэмшигч" />
+        </div>
+        <div style="display:flex;gap:8px;margin-top:8px">
+          <button class="btn" id="saveCardBtn">Карт нэмэх</button>
+          <button class="btn ghost" id="removeCardBtn">Карт устгах</button>
+        </div>
+
+        <div style="margin-top:12px" id="adminBannerWrap"></div>
+      </div>
+
+      <div class="panel section">
+        <div style="display:flex;justify-content:space-between;align-items:center">
+          <h3 id="paymentsTitle">Төлбөрийн түүх</h3>
+          <div class="chip" id="balanceChip">Баланс: ¥0</div>
+        </div>
+        <div style="margin-top:8px">
+          <table id="paymentsTable">
+            <thead><tr><th>Огноо</th><th>Тайлбар</th><th>Дүн</th><th></th></tr></thead>
+            <tbody></tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="panel section">
+        <h3 id="activityTitle">Үйлдлийн түүх</h3>
+        <div class="logs" id="activityLog"></div>
+      </div>
+
+      <div class="panel section">
+        <h3 id="remainingTitle">Үлдсэн хугацаа & Эрх сунгах</h3>
+        <div style="display:flex;gap:10px;align-items:center">
+          <div><strong id="remainingDays">-</strong><div class="muted">хоног үлдсэн</div></div>
+          <div style="margin-left:auto;display:flex;gap:8px">
+            <button class="btn" id="extendBtn">30 хоног сунгах</button>
+            <button class="btn ghost" id="payNow">Төлөх</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal-bg" id="adminModal" style="display:none;align-items:center;justify-content:center">
+    <div class="modal" style="max-width:520px">
+      <button class="close-btn" id="closeAdminModal">&times;</button>
+      <h3 id="adminModalTitle">Админтай холбогдох</h3>
+      <p id="adminModalText">Та төлбөр хийгээгүй тохиолдолд доорх товчоор админтай шууд холбогдоно уу.</p>
+      <div style="display:flex;gap:8px;margin-top:12px">
+        <button class="btn" id="mailtoAdminBtn">И-мэйл явуулах</button>
+        <button class="btn ghost" id="whatsappAdminBtn">WhatsApp (жишээ)</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const qs = s => document.querySelector(s);
+    const qsa = s => Array.from(document.querySelectorAll(s));
+    function nowDate(){ return new Date().toISOString().split('T')[0]; }
+    function maskCard(num){ if(!num) return ''; const digits = num.replace(/\D/g,''); if(digits.length < 4) return digits; return '**** **** **** ' + digits.slice(-4); }
+    function formatCardInput(v){ return v.replace(/\D/g,'').replace(/(.{4})/g,'$1 ').trim(); }
+
+    const STORAGE_KEY = 'user_profile_v2';
+    let state = JSON.parse(localStorage.getItem(STORAGE_KEY) || 'null');
+    if(!state){
+      state = { name:'Tuvshoo', email:'tuvshoo@mail.com', phone:'+97699999999', avatar:null, cards:[], payments:[{date:'2025-07-10', note:'N2 course', amount:1200, days:30}], activity:[], }
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+    }
+
+    const T = {
+      mn: { profile:'Профайл мэдээлэл', payments:'Төлбөрийн түүх', activity:'Үйлдлийн түүх', remaining:'Үлдсэн хугацаа & Эрх сунгах', contactAdmin:'Админтай холбогдох', logout:'Гарах', home:'Үндсэн хуудас' },
+      en: { profile:'Profile', payments:'Payment history', activity:'Activity log', remaining:'Remaining & Renewal', contactAdmin:'Contact Admin', logout:'Logout', home:'Home' },
+      ja: { profile:'プロフィール', payments:'支払い履歴', activity:'アクティビティログ', remaining:'残り期間と更新', contactAdmin:'管理者に連絡', logout:'ログアウト', home:'ホーム' }
+    };
+    function applyLang(code){ qs('#profileTitle').textContent = T[code].profile; qs('#paymentsTitle').textContent = T[code].payments; qs('#activityTitle').textContent = T[code].activity; qs('#remainingTitle').textContent = T[code].remaining; qs('#contactAdminBtn').textContent = T[code].contactAdmin; qs('#logoutBtn').textContent = T[code].logout; qs('#homeBtn').textContent = T[code].home; }
+
+    function renderProfile(){
+      qs('#nameDisplay').textContent = state.name; qs('#emailDisplay').textContent = state.email; qs('#phoneDisplay').textContent = state.phone;
+      qs('#inputName').value = state.name; qs('#inputEmail').value = state.email; qs('#inputPhone').value = state.phone;
+      qs('#lastUpdated').textContent = state._updated || '—';
+      const av = qs('#avatar'); av.innerHTML = '';
+      if(state.avatar){ const img = document.createElement('img'); img.src = state.avatar; av.appendChild(img); } else { av.textContent = (state.name || 'U').slice(0,2).toUpperCase(); }
+    }
+
+    function renderCards(){ const list = qs('#cardList'); list.innerHTML = ''; if(state.cards.length===0){ list.innerHTML = '<div class=\"muted\">Карт бүртгэлгүй</div>'; return; } state.cards.forEach(function(c,idx){ var el = document.createElement('div'); el.className='card-item'; el.innerHTML = '<div><div class=\"number\">'+ maskCard(c.number) +'</div><div class=\"meta\">'+ (c.holder || '—') +'</div></div><div style=\"display:flex;gap:8px;align-items:center\"><button class=\"btn ghost\" data-idx=\"'+ idx +'\" onclick=\"removeCard('+ idx +')\">Устгах</button></div>'; list.appendChild(el); }); }
+
+    function renderPayments(){ const tbody = qs('#paymentsTable tbody'); tbody.innerHTML=''; var balance=0; state.payments.forEach(function(p, idx){ var tr = document.createElement('tr'); tr.innerHTML = '<td>'+ p.date +'</td><td>'+ (p.note || '') +'</td><td>¥'+ p.amount +'</td><td class=\"right\"><button class=\"btn ghost\" onclick=\"deletePayment('+ idx +')\">Устгах</button></td>'; tbody.appendChild(tr); balance += Number(p.amount || 0); }); qs('#balanceChip').textContent = 'Баланс: ¥' + balance; }
+
+    function renderActivity(){ const wrap = qs('#activityLog'); wrap.innerHTML = ''; if(state.activity.length===0){ wrap.innerHTML='<div class=\"muted\">Үйлдлийн түүх хоосон</div>'; return; } state.activity.slice().reverse().forEach(function(a){ var d = document.createElement('div'); d.className='muted'; d.style.padding='6px 0'; d.textContent = a; wrap.appendChild(d); }); }
+
+    function saveState(){ state._updated = nowDate(); localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); renderAll(); }
+    function renderAll(){ renderProfile(); renderCards(); renderPayments(); renderActivity(); renderRemaining(); renderAdminBannerIfNeeded(); }
+
+    renderAll();
+
+    qs('#saveProfile').addEventListener('click', function(){ var n = qs('#inputName').value.trim(); var e = qs('#inputEmail').value.trim(); var p = qs('#inputPhone').value.trim(); if(!n||!e||!p){ alert('Бүх талбарыг бөглөнө үү'); return; } state.name = n; state.email = e; state.phone = p; state.activity.push(nowDate() + ' - Профайл шинэчилсэн'); saveState(); alert('Профайл амжилттай хадгалагдлаа'); });
+    qs('#cancelEdit').addEventListener('click', function(){ renderProfile(); });
+
+    qs('#uploadBtn').addEventListener('click', function(){ qs('#avatarInput').click(); });
+    qs('#avatarInput').addEventListener('change', function(e){ var f = e.target.files[0]; if(!f) return; var reader = new FileReader(); reader.onload = function(){ state.avatar = reader.result; state.activity.push(nowDate() + ' - Профайл зураг солисон'); saveState(); }; reader.readAsDataURL(f); });
+    qs('#removeAvatar').addEventListener('click', function(){ if(!state.avatar) return alert('Зураг байхгүй'); if(confirm('Профайл зургийг устгах уу?')){ state.avatar = null; state.activity.push(nowDate() + ' - Профайл зураг устгасан'); saveState(); } });
+
+    qs('#logoutBtn').addEventListener('click', function(){ localStorage.removeItem('loggedInUser'); alert('Танд баярлалаа — амжилт хүсье!'); window.location.href = 'index.html'; });
+    qs('#homeBtn').addEventListener('click', function(){ window.location.href = 'Main.html'; });
+
+    qs('#contactAdminBtn').addEventListener('click', function(){ qs('#adminModal').style.display='flex'; });
+    qs('#closeAdminModal').addEventListener('click', function(){ qs('#adminModal').style.display='none'; });
+    qs('#mailtoAdminBtn').addEventListener('click', function(){ var subject = encodeURIComponent('Төлбөрийн тусламж / Support'); var body = encodeURIComponent('Нэр: ' + state.name + '\\nEmail: ' + state.email + '\\nТайлбар: Эрхийн хугацаа дууссан тул тусламж хүсэж байна.'); window.location.href = 'mailto:admin@example.com?subject=' + subject + '&body=' + body; });
+    qs('#whatsappAdminBtn').addEventListener('click', function(){ alert('WhatsApp холбоос (жишээ): +976-90000000'); });
+
+    qs('#cardNumber').addEventListener('input', function(e){ e.target.value = formatCardInput(e.target.value); });
+    qs('#saveCardBtn').addEventListener('click', function(){ var num = qs('#cardNumber').value.replace(/\\s/g,''); var holder = qs('#cardHolder').value.trim(); if(!/^\\d{16}$/.test(num)){ alert('Картын дугаар 16 оронтой байна'); return; } state.cards.push({ number:num, holder:holder }); state.activity.push(nowDate() + ' - Карт нэмсэн'); saveState(); qs('#cardNumber').value=''; qs('#cardHolder').value=''; });
+    window.removeCard = function(idx){ if(!confirm('Карт устгах уу?')) return; state.cards.splice(idx,1); state.activity.push(nowDate() + ' - Карт устгасан'); saveState(); }
+    qs('#removeCardBtn').addEventListener('click', function(){ if(state.cards.length===0){ alert('Карт алга'); return; } if(confirm('Бүх картыг устгах уу?')){ state.cards=[]; state.activity.push(nowDate() + ' - Бүх карт устгасан'); saveState(); } });
+
+    window.deletePayment = function(idx){ if(!confirm('Төлбөрийг устгах уу?')) return; state.payments.splice(idx,1); state.activity.push(nowDate() + ' - Төлбөр устгасан'); saveState(); }
+
+    function getRemaining(){ if(state.payments.length===0) return -1; var last = state.payments[state.payments.length-1]; var start = new Date(last.date); var end = new Date(start); end.setDate(start.getDate() + Number(last.days || 0)); var diff = Math.ceil((end - new Date())/(1000*60*60*24)); return diff; }
+    function renderRemaining(){ var r = getRemaining(); qs('#remainingDays').textContent = r>0? r : 0; }
+    qs('#extendBtn').addEventListener('click', function(){ var today = nowDate(); state.payments.push({ date: today, note:'Renewal', amount:1200, days:30 }); state.activity.push(today + ' - Эрх сунгасан'); saveState(); alert('Эрх 30 хоногоор сунгагдлаа'); });
+    qs('#payNow').addEventListener('click', function(){ var today = nowDate(); state.payments.push({ date: today, note:'Manual payment', amount:1200, days:30 }); state.activity.push(today + ' - Төлсөн'); saveState(); alert('Төлбөр хүлээгдэж байна (локал тест)'); });
+
+    function renderAdminBannerIfNeeded(){ var wrap = qs('#adminBannerWrap'); wrap.innerHTML = ''; var r = getRemaining(); if(r <= 0){ var el = document.createElement('div'); el.className = 'admin-banner'; el.innerHTML = '<div><strong class=\"danger\">Таны эрхийн хугацаа дууссан!</strong><div class=\"muted\">Төлбөр хийгээгүй тохиолдолд доорх товчоор админтай холбогдоно уу.</div><div style=\"margin-top:10px\"><button class=\"btn\" id=\"contactNow\">Админтай холбогдох</button></div></div>'; wrap.appendChild(el); qs('#contactNow').addEventListener('click', function(){ qs('#adminModal').style.display='flex'; }); } }
+
+    qsa('.swatch').forEach(function(s){ s.addEventListener('click', function(e){ qsa('.swatch').forEach(function(x){ x.classList.remove('selected'); }); s.classList.add('selected'); var t = s.dataset.theme; var root = qs('#app'); root.classList.remove('theme-azure','theme-purple','theme-green','theme-coral','theme-rose'); root.classList.add('theme-'+t); localStorage.setItem('ui_theme', t); }); });
+    qs('#darkToggle').addEventListener('change', function(e){ if(e.target.checked) document.body.setAttribute('data-theme','dark'); else document.body.removeAttribute('data-theme'); localStorage.setItem('ui_dark', e.target.checked? '1':'0'); });
+
+    qs('#langSelect').addEventListener('change', function(e){ applyLang(e.target.value); localStorage.setItem('ui_lang', e.target.value); });
+
+    (function loadUi(){ var t = localStorage.getItem('ui_theme') || 'azure'; var sw = qs('.swatch[data-theme=\"' + t + '\"]'); if(sw) sw.classList.add('selected'); qs('#app').classList.add('theme-'+t); var dark = localStorage.getItem('ui_dark')==='1'; qs('#darkToggle').checked = dark; if(dark) document.body.setAttribute('data-theme','dark'); var lang = localStorage.getItem('ui_lang') || 'mn'; qs('#langSelect').value = lang; applyLang(lang); renderAll(); })();
+  </script>
+</body>
+</html>

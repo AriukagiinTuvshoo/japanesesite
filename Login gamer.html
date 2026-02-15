@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Login / Register</title>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Orbitron', sans-serif;
+      background: radial-gradient(circle at top, #0f0c29, #302b63, #24243e);
+      color: #fff;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+    .container {
+      background-color: rgba(0, 0, 0, 0.85);
+      padding: 40px;
+      border-radius: 16px;
+      box-shadow: 0 0 20px #00f0ff;
+      max-width: 420px;
+      width: 100%;
+    }
+    h2 {
+      text-align: center;
+      margin-bottom: 20px;
+      color: #00f0ff;
+      text-shadow: 0 0 5px #00f0ff;
+    }
+    input {
+      width: 100%;
+      padding: 12px;
+      margin: 10px 0;
+      border: none;
+      border-radius: 8px;
+      background-color: #1e1e2f;
+      color: #fff;
+    }
+    input::placeholder {
+      color: #aaa;
+    }
+    .toggle-password {
+      position: absolute;
+      right: 16px;
+      top: 50%;
+      transform: translateY(-50%);
+      cursor: pointer;
+      font-size: 18px;
+      color: #00f0ff;
+    }
+    button {
+      width: 100%;
+      padding: 12px;
+      background-color: #00f0ff;
+      color: #000;
+      border: none;
+      border-radius: 8px;
+      font-size: 16px;
+      cursor: pointer;
+      margin-top: 10px;
+      transition: 0.3s;
+    }
+    button:hover {
+      background-color: #00c0cc;
+    }
+    .link {
+      text-align: center;
+      margin-top: 12px;
+      color: #aaa;
+      cursor: pointer;
+    }
+    .hidden {
+      display: none;
+    }
+    .input-wrapper {
+      position: relative;
+    }
+    #languageSelector {
+      margin-bottom: 20px;
+      width: 100%;
+      padding: 10px;
+      border-radius: 8px;
+      background-color: #1e1e2f;
+      color: #fff;
+      border: none;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <select id="languageSelector">
+      <option value="en">English</option>
+      <option value="mn">Монгол</option>
+      <option value="ja">日本語</option>
+    </select>
+
+    <!-- Login Form -->
+    <div id="loginForm">
+      <h2 data-i18n="login">Login</h2>
+      <input type="tel" id="loginPhone" data-i18n-placeholder="phone" placeholder="Phone Number" required />
+      <div class="input-wrapper">
+        <input type="password" id="loginPassword" data-i18n-placeholder="password" placeholder="Password" required />
+        <span class="toggle-password" data-target="loginPassword">👁️</span>
+        <script>
+  // ... өмнөх translations, changeLanguage г.м ...
+
+  // Show/Hide password toggle
+  document.querySelectorAll(".toggle-password").forEach(icon => {
+    icon.addEventListener("click", () => {
+      const targetId = icon.getAttribute("data-target");
+      const input = document.getElementById(targetId);
+
+      if (input.type === "password") {
+        input.type = "text";
+        icon.textContent = "🙈"; // 👁️ → 🙈 болгон өөрчлөнө
+      } else {
+        input.type = "password";
+        icon.textContent = "👁️"; 
+      }
+    });
+  });
+</script>
+      </div>
+      <button data-i18n="login">Login</button>
+      <div class="link" onclick="toggleForm('signupForm')" data-i18n="register">Register</div>
+      <div class="link" onclick="toggleForm('resetForm')" data-i18n="reset">Reset Password</div>
+    </div>
+
+    <!-- Signup Form -->
+    <div id="signupForm" class="hidden">
+      <h2 data-i18n="register">Register</h2>
+      <input type="text" id="signName" data-i18n-placeholder="name" placeholder="Name" required />
+      <input type="tel" id="signPhone" data-i18n-placeholder="phone" placeholder="Phone Number" required />
+      <input type="email" id="signEmail" data-i18n-placeholder="email" placeholder="Email" required />
+      <div class="input-wrapper">
+        <input type="password" id="signPassword" data-i18n-placeholder="password" placeholder="Password" required />
+        <span class="toggle-password" data-target="signPassword">👁️</span>
+        <script>
+  // ... өмнөх translations, changeLanguage г.м ...
+
+  // Show/Hide password toggle
+  document.querySelectorAll(".toggle-password").forEach(icon => {
+    icon.addEventListener("click", () => {
+      const targetId = icon.getAttribute("data-target");
+      const input = document.getElementById(targetId);
+
+      if (input.type === "password") {
+        input.type = "text";
+        icon.textContent = "🙈"; // 👁️ → 🙈 болгон өөрчлөнө
+      } else {
+        input.type = "password";
+        icon.textContent = "👁️"; 
+      }
+    });
+  });
+</script>
+      </div>
+      <input type="text" id="signSecret" data-i18n-placeholder="secret" placeholder="Secret Answer" required />
+      <button data-i18n="register">Register</button>
+      <div class="link" onclick="toggleForm('loginForm')" data-i18n="back">Back</div>
+    </div>
+
+    <!-- Reset Form -->
+    <div id="resetForm" class="hidden">
+      <h2 data-i18n="reset">Reset Password</h2>
+      <input type="tel" id="resetPhone" data-i18n-placeholder="phone" placeholder="Phone Number" required />
+      <input type="text" id="resetSecret" data-i18n-placeholder="secret" placeholder="Secret Answer" required />
+      <div class="input-wrapper">
+        <input type="password" id="newPasswordInput" data-i18n-placeholder="password" placeholder="New Password" required />
+        <span class="toggle-password" data-target="newPasswordInput">👁️</span>
+        <script>
+  // ... өмнөх translations, changeLanguage г.м ...
+
+  // Show/Hide password toggle
+  document.querySelectorAll(".toggle-password").forEach(icon => {
+    icon.addEventListener("click", () => {
+      const targetId = icon.getAttribute("data-target");
+      const input = document.getElementById(targetId);
+
+      if (input.type === "password") {
+        input.type = "text";
+        icon.textContent = "🙈"; // 👁️ → 🙈 болгон өөрчлөнө
+      } else {
+        input.type = "password";
+        icon.textContent = "👁️"; 
+      }
+    });
+  });
+</script>
+
+      </div>
+      <button data-i18n="reset">Reset</button>
+      <div class="link" onclick="toggleForm('loginForm')" data-i18n="back">Back</div>
+    </div>
+  </div>
+
+  <script>
+    const translations = {
+      en: {
+        login: "Login",
+        register: "Register",
+        reset: "Reset Password",
+        phone: "Phone Number",
+        password: "Password",
+        name: "Name",
+        email: "Email",
+        secret: "Secret Answer",
+        back: "Back"
+      },
+      mn: {
+        login: "Нэвтрэх",
+        register: "Бүртгүүлэх",
+        reset: "Нууц үг сэргээх",
+        phone: "Утасны дугаар",
+        password: "Нууц үг",
+        name: "Нэр",
+        email: "И-мэйл",
+        secret: "Нууц хариулт",
+        back: "Буцах"
+      },
+      ja: {
+        login: "ログイン",
+        register: "登録",
+        reset: "パスワードをリセット",
+        phone: "電話番号",
+        password: "パスワード",
+        name: "名前",
+        email: "メール",
+        secret: "秘密の答え",
+        back: "戻る"
+      }
+    };
+
+    function changeLanguage(lang) {
+      localStorage.setItem("lang", lang);
+      const t = translations[lang];
+
+      // Translate text
+      document.querySelectorAll("[data-i18n]").forEach(el => {
+        const key = el.getAttribute("data-i18n");
+        if (t[key]) el.textContent = t[key];
+      });
+
+      // Translate placeholders
+      document.querySelectorAll("[data-i18n-placeholder]").forEach(el => {
+        const key = el.getAttribute("data-i18n-placeholder");
+        if (t[key]) el.placeholder = t[key];
+      });
+    }
+
+    document.getElementById("languageSelector").addEventListener("change", function(e) {
+      changeLanguage(e.target.value);
+    });
+
+    window.onload = () => {
+      const savedLang = localStorage.getItem("lang") || "en";
+      document.getElementById("languageSelector").value = savedLang;
+      changeLanguage(savedLang);
+    };
+
+    // Dummy form toggle function
+    function toggleForm(formId) {
+      document.querySelectorAll("#loginForm, #signupForm, #resetForm").forEach(f => f.classList.add("hidden"));
+      document.getElementById(formId).classList.remove("hidden");
+    }
+  </script>
+</body>
+</html>
