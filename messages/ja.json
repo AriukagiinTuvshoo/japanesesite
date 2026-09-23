@@ -1,0 +1,38 @@
+{
+  "home": {
+    "tagline": "日本語 · JLPT N5—N1",
+    "title": "毎日、少しずつ日本語を。",
+    "intro": "日本語のレッスン、語彙、練習を一か所で続けましょう。",
+    "login": "ログイン",
+    "signup": "無料で登録",
+    "features": "語彙 · 文法 · 読解 · 聴解 · 学習記録",
+    "account": "学習アカウント",
+    "dashboard": "おかえりなさい",
+    "signedIn": "アカウントを使って学習記録を複数の端末で同期できます。",
+    "signout": "ログアウト",
+    "admin": "管理者ページ",
+    "setup": "Supabaseの設定後に登録できるようになります。",
+    "disclaimer": "独自の学習教材です。JLPT公式試験または完全なシラバスではありません。"
+  },
+  "auth": {
+    "loginTitle": "アカウントにログイン",
+    "signupTitle": "アカウントを作成",
+    "email": "メールアドレス",
+    "password": "パスワード",
+    "name": "名前",
+    "submitLogin": "ログイン",
+    "submitSignup": "登録する",
+    "noAccount": "アカウントをお持ちでない方",
+    "hasAccount": "すでに登録済みですか？",
+    "signupLink": "新規登録",
+    "loginLink": "ログイン",
+    "emailCheck": "メールを確認してください",
+    "emailCheckText": "確認リンクが届いたら、リンクから登録を完了してください。",
+    "configurationError": "アカウント機能はまだ設定されていません。",
+    "invalidCredentials": "メールアドレスとパスワードの条件を確認してください。",
+    "invalidLogin": "入力情報が正しくないか、アカウントが未確認です。",
+    "invalidSignup": "名前、メールアドレス、パスワードの条件を確認してください。",
+    "siteUrlError": "サイトの基本URLが設定されていません。",
+    "signupFailed": "登録に失敗しました。メールを確認して再度お試しください。"
+  }
+}

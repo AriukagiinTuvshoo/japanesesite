@@ -1,0 +1,38 @@
+{
+  "home": {
+    "tagline": "JAPANESE · JLPT N5—N1",
+    "title": "A little Japanese, every day.",
+    "intro": "Keep your Japanese lessons, vocabulary and practice in one place.",
+    "login": "Log in",
+    "signup": "Create a free account",
+    "features": "Vocabulary · grammar · reading · listening · synced progress",
+    "account": "Your study account",
+    "dashboard": "Welcome back",
+    "signedIn": "Use your account to sync study progress across devices.",
+    "signout": "Sign out",
+    "admin": "Admin area",
+    "setup": "Account creation will be available after Supabase is configured.",
+    "disclaimer": "Independent study material. Not an official JLPT exam or complete syllabus."
+  },
+  "auth": {
+    "loginTitle": "Log in to your account",
+    "signupTitle": "Create an account",
+    "email": "Email",
+    "password": "Password",
+    "name": "Your name",
+    "submitLogin": "Log in",
+    "submitSignup": "Create account",
+    "noAccount": "New here?",
+    "hasAccount": "Already have an account?",
+    "signupLink": "Sign up",
+    "loginLink": "Log in",
+    "emailCheck": "Check your email",
+    "emailCheckText": "If a confirmation link was sent, use it to complete registration.",
+    "configurationError": "Account services are not configured yet.",
+    "invalidCredentials": "Check your email and password requirements.",
+    "invalidLogin": "The details are incorrect or the account is not confirmed.",
+    "invalidSignup": "Check your name, email and password requirements.",
+    "siteUrlError": "The site's base URL is not configured.",
+    "signupFailed": "Account creation failed. Check your email and try again."
+  }
+}
