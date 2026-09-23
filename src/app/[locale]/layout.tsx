@@ -3,10 +3,11 @@ import { getMessages } from "next-intl/server";
 import { notFound } from "next/navigation";
 import type { Metadata, Viewport } from "next";
 import { routing } from "@/i18n/routing";
+import { getSiteUrl } from "@/lib/site-url";
 import "../globals.css";
 
 export const metadata: Metadata = {
-  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000"),
+  metadataBase: getSiteUrl(),
   title: { default: "Nihongo — Япон хэлээ өдөр бүр ахиул", template: "%s | Nihongo" },
   description: "Монгол хэлээр хирагана, катакана болон JLPT N5–N1 түвшний япон хэлээ алхам алхмаар сураарай.",
   applicationName: "Nihongo",

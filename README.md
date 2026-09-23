@@ -7,7 +7,7 @@ Mobile-first Japanese study platform foundation for Mongolian, English and Japan
 1. Install Node.js 20.9 or newer.
 2. Run `npm ci`.
 3. Copy `.env.example` to `.env.local` and set the Supabase project URL, publishable key, and site URL.
-4. In the Supabase SQL editor, apply `supabase/migrations/20260923083443_initial_jlpt_platform.sql` (or use the Supabase CLI linked to your project).
+4. In the Supabase SQL editor, apply every SQL migration in `supabase/migrations/` in filename order (or use the Supabase CLI linked to your project). This includes the additive learning-preferences migration.
 5. In Supabase Auth, enable email confirmation and add `<site-url>/auth/confirm` to the allowed redirect URLs.
 6. Run `npm run dev` and open `http://localhost:3000/mn`.
 
