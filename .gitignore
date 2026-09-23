@@ -1,0 +1,47 @@
+# Dependencies
+node_modules/
+.pnp
+.pnp.js
+
+# Build
+.next/
+out/
+dist/
+
+# Environment
+.env*
+!.env.example
+
+# Data (too large for git)
+data/sql/
+data/jsonl/
+data/logs/
+data/*.sql
+data/*.jsonl
+
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+.Python
+
+# OS
+.DS_Store
+*.swp
+*.swo
+Thumbs.db
+
+# Logs
+*.log
+npm-debug.log*
+
+# Testing
+coverage/
+.nyc_output
+
+# Vercel
+.vercel
+
+# TypeScript
+*.tsbuildinfo
+next-env.d.ts

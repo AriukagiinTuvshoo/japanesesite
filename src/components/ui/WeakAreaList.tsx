@@ -1,0 +1,1 @@
+export { WeakAreaList } from './index'
