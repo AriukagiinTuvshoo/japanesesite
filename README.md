@@ -1,26 +1,37 @@
-# Nihongo JLPT — Japanese study in three languages
+# Nihongo JLPT
 
-A small mobile-first, installable web app for studying Japanese in Mongolian, English and Japanese. The static site can be hosted with GitHub Pages.
+Монгол, English, 日本語 интерфэйстэй JLPT судлах PWA. Энэ хувилбар Next.js App Router, TypeScript, Tailwind, Supabase Auth/Postgres ашиглана.
 
-## Run locally
+## Локал хөгжүүлэлт
 
-Open `index.html` in a browser. For service-worker/offline and install support, serve the directory over HTTPS or a local web server (for example `python3 -m http.server 8000`).
+1. Node.js 24 болон Supabase CLI суулгана.
+2. `npm ci`
+3. Supabase project үүсгээд `.env.example`-ийг хуулж `.env.local` болгон, `NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY` утгаа оруулна.
+4. `npx supabase link --project-ref <project-ref>`
+5. `npx supabase db push` — эхлээд fresh project дээр хэрэглэнэ.
+6. `npm run dev`
 
-## Included
+Supabase Auth дээр имэйл баталгаажуулах болон зөв redirect URL-үүдийг тохируулна. Нэвтрэлтийн route abuse хамгаалалтад Upstash Redis-ийн `UPSTASH_REDIS_REST_URL` болон `UPSTASH_REDIS_REST_TOKEN` тохируулна. Production орчинд эдгээр тохиргоо дутвал нэвтрэлт хаагдана.
 
-- Interface language selector: Монгол / English / 日本語
-- N5–N1 study-path overview
-- Searchable, level-filtered starter vocabulary with Japanese reading, Mongolian and English meanings, example sentences, browser speech, and saved words
-- Five original practice questions, translated choices, and explanations
-- Responsive mobile navigation and PWA manifest/service worker
-- Local browser storage for selected language, study streak, and saved words
+`SUPABASE_SERVICE_ROLE_KEY`-ийг клиентэд бүү оруул; энэ аппын client env шаардлагагүй. Admin эрхийг Auth user үүссэний дараа зөвхөн итгэмжлэгдсэн сервер/SQL администратор өгнө. `public.users.role` нь клиентээс шинэчлэгдэх боломжгүй.
 
-## Content coverage
+## Шалгах командууд
 
-The current glossary is a reviewed starter set of 24 words. It is not a complete JLPT syllabus and the practice questions are not official JLPT questions. The supplied dictionary data contains many entries without JLPT level labels and has limited Mongolian translations; those entries need level mapping and translation review in batches before they can be presented as a complete multilingual dictionary. No scanned commercial textbooks are redistributed here.
+- `npm run lint`
+- `npm run type-check`
+- `npm test -- --ci`
+- `npm run build`
 
-Progress is currently stored in the learner's browser on that device. Cross-device account sync needs a configured backend and user authentication.
+GitHub Actions эдгээр шалгалтыг PR бүр дээр ажиллуулна.
 
-## Deploy with GitHub Pages
+## Өгөгдлийн сан ба аюулгүй байдал
 
-In the repository settings, enable **Pages** and publish from the `main` branch root. Use the resulting HTTPS URL to install the web app from the browser's share/menu options.
+`supabase/migrations/` дахь эхний schema болон дараах hardening migration-уудыг дарааллаар ажиллуулна. Шинэ migration нь auth хэрэглэгч үүсгэх trigger, profile/role RLS, admin хамгаалалт, quiz хариултын түлхүүрийг нуух, сервер талын quiz grading зэргийг тохируулна. Одоогоор Supabase project холбоогүй учраас migration-ийг remote DB дээр хэрэгжүүлээгүй.
+
+## Контент ба JLPT мэдэгдэл
+
+N5–N1 тэмдэглэгээ нь суралцах чиглүүлэгч бөгөөд JLPT албан ёсны syllabus, асуулт, баталгаат жагсаалтыг хуулбарлахгүй. Одоогийн өгөгдлийн багцад хязгаарлагдмал эх контент орсон; түвшин бүрийн бүрэн үгийн сан, дүрэм, сонсгол, уншлагын контент нэмэхээс өмнө лиценз болон Монгол орчуулгыг редактороор хянуулна. Энэ апп нь албан бус жишиг сургалтын материал болно.
+
+## Байршуулалт
+
+Vercel дээр Next.js app болгон байршуулна. GitHub Pages нь энэ backend-тэй хувилбарт тохирохгүй. Production deploy-оос өмнө Supabase migrations, Auth redirect URL, Upstash хувьсагч, аппын домэйныг тохируулна.
