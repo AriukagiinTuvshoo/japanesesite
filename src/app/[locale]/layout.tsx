@@ -6,18 +6,24 @@ import { routing } from "@/i18n/routing";
 import { getSiteUrl } from "@/lib/site-url";
 import "../globals.css";
 
-export const metadata: Metadata = {
-  metadataBase: getSiteUrl(),
-  title: { default: "Nihongo — Япон хэлээ өдөр бүр ахиул", template: "%s | Nihongo" },
-  description: "Монгол хэлээр хирагана, катакана болон JLPT N5–N1 түвшний япон хэлээ алхам алхмаар сураарай.",
-  applicationName: "Nihongo",
-  keywords: ["япон хэл сурах", "JLPT бэлтгэл", "хирагана дасгал", "катакана сурах", "япон хэл монгол", "JLPT N5", "япон хэлний үг цээжлэх"],
-  openGraph: { type: "website", siteName: "Nihongo", locale: "mn_MN", title: "Nihongo — Япон хэлээ өдөр бүр ахиул", description: "Монгол хэлээр япон хэл болон JLPT-д шат дараатай бэлдээрэй.", images: [{ url: "/og-image.svg", width: 1200, height: 630, alt: "Nihongo — Япон хэлний сургалт" }] },
-  twitter: { card: "summary_large_image", title: "Nihongo — Япон хэлээ өдөр бүр ахиул", description: "Монгол хэлээр япон хэл болон JLPT-д шат дараатай бэлдээрэй.", images: ["/og-image.svg"] },
-  alternates: { languages: { mn: "/mn", en: "/en", ja: "/ja" } },
-  manifest: "/manifest.webmanifest",
-  icons: { icon: "/icon.svg" },
-};
+export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }): Promise<Metadata> {
+  const { locale } = await params;
+  const localizedTitle = locale === "en" ? "Japanese study, one step at a time" : locale === "ja" ? "日本語を毎日少しずつ学ぶ" : "Япон хэлээ өдөр бүр ахиул";
+  const localizedDescription = locale === "en" ? "Study hiragana and prepare for the JLPT step by step." : locale === "ja" ? "ひらがなからJLPTまで、日本語を段階的に学びましょう。" : "Монгол хэлээр хирагана болон JLPT-д шат дараатай бэлдээрэй.";
+  const image = `/${locale}/opengraph-image`;
+  return {
+    metadataBase: getSiteUrl(),
+    title: { default: `Nihongo — ${localizedTitle}`, template: "%s | Nihongo" },
+    description: localizedDescription,
+    applicationName: "Nihongo",
+    keywords: ["япон хэл сурах", "JLPT бэлтгэл", "хирагана дасгал", "катакана сурах", "япон хэл монгол", "JLPT N5", "япон хэлний үг цээжлэх"],
+    openGraph: { type: "website", siteName: "Nihongo", locale: locale === "en" ? "en_US" : locale === "ja" ? "ja_JP" : "mn_MN", title: `Nihongo — ${localizedTitle}`, description: localizedDescription, images: [{ url: image, width: 1200, height: 630, alt: `Nihongo — ${localizedTitle}` }] },
+    twitter: { card: "summary_large_image", title: `Nihongo — ${localizedTitle}`, description: localizedDescription, images: [image] },
+    alternates: { languages: { mn: "/mn", en: "/en", ja: "/ja" } },
+    manifest: "/manifest.webmanifest",
+    icons: { icon: "/icon.svg" },
+  };
+}
 
 export const viewport: Viewport = { themeColor: "#f8f8f5", width: "device-width", initialScale: 1 };
 
