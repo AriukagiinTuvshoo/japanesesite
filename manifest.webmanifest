@@ -1,0 +1,12 @@
+{
+  "name": "Nihongo — JLPT Japanese Study",
+  "short_name": "Nihongo",
+  "description": "Japanese study tools in Mongolian, English and Japanese",
+  "lang": "mn",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#f8f8f5",
+  "theme_color": "#f8f8f5",
+  "icons": [{"src":"icon.svg","sizes":"any","type":"image/svg+xml","purpose":"any maskable"}]
+}
