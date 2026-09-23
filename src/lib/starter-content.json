@@ -1,0 +1,401 @@
+{
+  "words": [
+    {
+      "jp": "水",
+      "reading": "みず",
+      "mn": "ус",
+      "en": "water",
+      "level": "N5",
+      "example": "水を飲みます。",
+      "exMn": "Ус ууна.",
+      "exEn": "I drink water."
+    },
+    {
+      "jp": "学校",
+      "reading": "がっこう",
+      "mn": "сургууль",
+      "en": "school",
+      "level": "N5",
+      "example": "学校へ行きます。",
+      "exMn": "Сургууль руу явна.",
+      "exEn": "I go to school."
+    },
+    {
+      "jp": "先生",
+      "reading": "せんせい",
+      "mn": "багш",
+      "en": "teacher",
+      "level": "N5",
+      "example": "先生に聞きます。",
+      "exMn": "Багшаас асууна.",
+      "exEn": "I ask the teacher."
+    },
+    {
+      "jp": "学生",
+      "reading": "がくせい",
+      "mn": "оюутан, сурагч",
+      "en": "student",
+      "level": "N5",
+      "example": "学生です。",
+      "exMn": "Би оюутан.",
+      "exEn": "I am a student."
+    },
+    {
+      "jp": "友達",
+      "reading": "ともだち",
+      "mn": "найз",
+      "en": "friend",
+      "level": "N5",
+      "example": "友達と話します。",
+      "exMn": "Найзтайгаа ярилцана.",
+      "exEn": "I talk with a friend."
+    },
+    {
+      "jp": "今日",
+      "reading": "きょう",
+      "mn": "өнөөдөр",
+      "en": "today",
+      "level": "N5",
+      "example": "今日は暑いです。",
+      "exMn": "Өнөөдөр халуун байна.",
+      "exEn": "It is hot today."
+    },
+    {
+      "jp": "明日",
+      "reading": "あした",
+      "mn": "маргааш",
+      "en": "tomorrow",
+      "level": "N5",
+      "example": "明日、行きます。",
+      "exMn": "Маргааш явна.",
+      "exEn": "I will go tomorrow."
+    },
+    {
+      "jp": "昨日",
+      "reading": "きのう",
+      "mn": "өчигдөр",
+      "en": "yesterday",
+      "level": "N5",
+      "example": "昨日、本を読みました。",
+      "exMn": "Өчигдөр ном уншсан.",
+      "exEn": "I read a book yesterday."
+    },
+    {
+      "jp": "食べる",
+      "reading": "たべる",
+      "mn": "идэх",
+      "en": "to eat",
+      "level": "N5",
+      "example": "りんごを食べます。",
+      "exMn": "Алим иднэ.",
+      "exEn": "I eat an apple."
+    },
+    {
+      "jp": "飲む",
+      "reading": "のむ",
+      "mn": "уух",
+      "en": "to drink",
+      "level": "N5",
+      "example": "お茶を飲みます。",
+      "exMn": "Цай ууна.",
+      "exEn": "I drink tea."
+    },
+    {
+      "jp": "大きい",
+      "reading": "おおきい",
+      "mn": "том",
+      "en": "big; large",
+      "level": "N5",
+      "example": "大きい犬です。",
+      "exMn": "Том нохой байна.",
+      "exEn": "It is a big dog."
+    },
+    {
+      "jp": "小さい",
+      "reading": "ちいさい",
+      "mn": "жижиг",
+      "en": "small",
+      "level": "N5",
+      "example": "小さい店です。",
+      "exMn": "Жижиг дэлгүүр байна.",
+      "exEn": "It is a small shop."
+    },
+    {
+      "jp": "好き",
+      "reading": "すき",
+      "mn": "дуртай",
+      "en": "to like",
+      "level": "N5",
+      "example": "音楽が好きです。",
+      "exMn": "Хөгжимд дуртай.",
+      "exEn": "I like music."
+    },
+    {
+      "jp": "時間",
+      "reading": "じかん",
+      "mn": "цаг хугацаа",
+      "en": "time",
+      "level": "N5",
+      "example": "時間があります。",
+      "exMn": "Завтай байна.",
+      "exEn": "I have time."
+    },
+    {
+      "jp": "電車",
+      "reading": "でんしゃ",
+      "mn": "галт тэрэг",
+      "en": "train",
+      "level": "N5",
+      "example": "電車で行きます。",
+      "exMn": "Галт тэргээр явна.",
+      "exEn": "I go by train."
+    },
+    {
+      "jp": "病院",
+      "reading": "びょういん",
+      "mn": "эмнэлэг",
+      "en": "hospital",
+      "level": "N4",
+      "example": "病院で働いています。",
+      "exMn": "Эмнэлэгт ажилладаг.",
+      "exEn": "I work at a hospital."
+    },
+    {
+      "jp": "必要",
+      "reading": "ひつよう",
+      "mn": "шаардлагатай",
+      "en": "necessary",
+      "level": "N4",
+      "example": "予約が必要です。",
+      "exMn": "Урьдчилан захиалах шаардлагатай.",
+      "exEn": "A reservation is necessary."
+    },
+    {
+      "jp": "準備",
+      "reading": "じゅんび",
+      "mn": "бэлтгэл",
+      "en": "preparation",
+      "level": "N4",
+      "example": "旅行の準備をします。",
+      "exMn": "Аяллын бэлтгэл хийнэ.",
+      "exEn": "I prepare for a trip."
+    },
+    {
+      "jp": "経験",
+      "reading": "けいけん",
+      "mn": "туршлага",
+      "en": "experience",
+      "level": "N3",
+      "example": "いい経験になりました。",
+      "exMn": "Сайхан туршлага боллоо.",
+      "exEn": "It became a good experience."
+    },
+    {
+      "jp": "確認",
+      "reading": "かくにん",
+      "mn": "шалгах, баталгаажуулах",
+      "en": "confirmation; check",
+      "level": "N3",
+      "example": "予定を確認します。",
+      "exMn": "Төлөвлөгөөг шалгана.",
+      "exEn": "I will check the schedule."
+    },
+    {
+      "jp": "環境",
+      "reading": "かんきょう",
+      "mn": "орчин, байгаль орчин",
+      "en": "environment",
+      "level": "N2",
+      "example": "環境について考えます。",
+      "exMn": "Байгаль орчны талаар бодно.",
+      "exEn": "I think about the environment."
+    },
+    {
+      "jp": "影響",
+      "reading": "えいきょう",
+      "mn": "нөлөө",
+      "en": "influence; effect",
+      "level": "N2",
+      "example": "天気の影響を受けます。",
+      "exMn": "Цаг агаарын нөлөөнд орно.",
+      "exEn": "It is affected by the weather."
+    },
+    {
+      "jp": "傾向",
+      "reading": "けいこう",
+      "mn": "хандлага",
+      "en": "trend; tendency",
+      "level": "N1",
+      "example": "最近の傾向を調べます。",
+      "exMn": "Сүүлийн үеийн хандлагыг судална.",
+      "exEn": "I research recent trends."
+    },
+    {
+      "jp": "維持",
+      "reading": "いじ",
+      "mn": "хадгалах, хэвээр байлгах",
+      "en": "maintain; preserve",
+      "level": "N1",
+      "example": "健康を維持します。",
+      "exMn": "Эрүүл мэндээ хадгална.",
+      "exEn": "I maintain my health."
+    }
+  ],
+  "quiz": [
+    {
+      "q": "「水（みず）」",
+      "en": "What does 「水（みず）」 mean?",
+      "ja": "「水（みず）」の意味は何ですか。",
+      "a": {
+        "mn": [
+          "Ус",
+          "Гал",
+          "Мод",
+          "Цаг"
+        ],
+        "en": [
+          "Water",
+          "Fire",
+          "Tree",
+          "Time"
+        ],
+        "ja": [
+          "水",
+          "火",
+          "木",
+          "時間"
+        ]
+      },
+      "ok": 0,
+      "why": {
+        "mn": "水（みず） гэдэг нь ус гэсэн утгатай.",
+        "en": "水（みず） means water.",
+        "ja": "水（みず）は water（ус）という意味です。"
+      }
+    },
+    {
+      "q": "「学校（がっこう）」",
+      "en": "What is a 「学校（がっこう）」?",
+      "ja": "「学校（がっこう）」はどこですか。",
+      "a": {
+        "mn": [
+          "Эмнэлэг",
+          "Сургууль",
+          "Дэлгүүр",
+          "Банк"
+        ],
+        "en": [
+          "Hospital",
+          "School",
+          "Shop",
+          "Bank"
+        ],
+        "ja": [
+          "病院",
+          "学校",
+          "店",
+          "銀行"
+        ]
+      },
+      "ok": 1,
+      "why": {
+        "mn": "学校（がっこう） гэдэг нь сургууль.",
+        "en": "学校（がっこう） means school.",
+        "ja": "学校（がっこう）は school（学校）です。"
+      }
+    },
+    {
+      "q": "「きのう」",
+      "en": "What does 「きのう」 mean?",
+      "ja": "「きのう」の意味は何ですか。",
+      "a": {
+        "mn": [
+          "Маргааш",
+          "Өнөөдөр",
+          "Өчигдөр",
+          "Өглөө"
+        ],
+        "en": [
+          "Tomorrow",
+          "Today",
+          "Yesterday",
+          "Morning"
+        ],
+        "ja": [
+          "明日",
+          "今日",
+          "昨日",
+          "朝"
+        ]
+      },
+      "ok": 2,
+      "why": {
+        "mn": "きのう（昨日） гэдэг нь өчигдөр.",
+        "en": "きのう（昨日） means yesterday.",
+        "ja": "きのう（昨日）は yesterday（昨日）です。"
+      }
+    },
+    {
+      "q": "「私は毎日日本語を勉強します。」",
+      "en": "What does 「私は毎日日本語を勉強します。」 mean?",
+      "ja": "「私は毎日日本語を勉強します。」の意味は？",
+      "a": {
+        "mn": [
+          "Өдөр бүр япон хэл сурдаг",
+          "Япон руу өдөр бүр явдаг",
+          "Өдөр бүр ажилладаг",
+          "Өдөр бүр ном уншдаг"
+        ],
+        "en": [
+          "I study Japanese every day",
+          "I go to Japan every day",
+          "I work every day",
+          "I read every day"
+        ],
+        "ja": [
+          "毎日日本語を勉強します",
+          "毎日日本へ行きます",
+          "毎日働きます",
+          "毎日本を読みます"
+        ]
+      },
+      "ok": 0,
+      "why": {
+        "mn": "勉強します нь сурах, хичээллэх гэсэн утгатай.",
+        "en": "勉強します means to study.",
+        "ja": "勉強しますは study（勉強する）という意味です。"
+      }
+    },
+    {
+      "q": "「これは私の本です。」の「私」",
+      "en": "In 「これは私の本です。」, what does 「私」 mean?",
+      "ja": "「これは私の本です。」の「私」の意味は？",
+      "a": {
+        "mn": [
+          "Найз",
+          "Багш",
+          "Би",
+          "Ном"
+        ],
+        "en": [
+          "Friend",
+          "Teacher",
+          "I; me",
+          "Book"
+        ],
+        "ja": [
+          "友達",
+          "先生",
+          "私",
+          "本"
+        ]
+      },
+      "ok": 2,
+      "why": {
+        "mn": "私（わたし） нь би гэсэн утгатай.",
+        "en": "私（わたし） means I or me.",
+        "ja": "私（わたし）は I / me（私）という意味です。"
+      }
+    }
+  ]
+}

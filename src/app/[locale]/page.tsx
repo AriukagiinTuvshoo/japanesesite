@@ -2,8 +2,8 @@ import Link from "next/link";
 import { getTranslations } from "next-intl/server";
 import { hasSupabaseConfig } from "@/lib/supabase/config";
 import { createClient } from "@/lib/supabase/server";
-import { signOut } from "@/app/auth/actions";
 import { routing } from "@/i18n/routing";
+import Dashboard, { type DashboardData } from "@/components/dashboard";
 
 export const dynamic = "force-dynamic";
 
@@ -11,11 +11,54 @@ export default async function Home({ params }: { params: Promise<{ locale: strin
   const { locale } = await params;
   const t = await getTranslations("home");
   let user = null;
+  const dashboard: DashboardData = { minutesToday: 0, dailyGoal: 20, jlptTarget: null, weeklyMinutes: Array(7).fill(0), totalMinutes: 0, streak: 0, savedWords: null, error: false };
+  let displayName = "";
   if (hasSupabaseConfig()) {
     const supabase = await createClient();
     const { data } = await supabase.auth.getUser();
     user = data.user;
+    if (user) {
+      displayName = String(user.user_metadata.display_name || "").trim() || user.email?.split("@")[0] || "";
+      const now = new Date();
+      const today = now.toISOString().slice(0, 10);
+      const from = new Date(Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate() - 399)).toISOString();
+      const [sessionsResult, savedResult, profileResult] = await Promise.all([
+        supabase.from("study_sessions").select("started_at,minutes_studied").gte("started_at", from).order("started_at", { ascending: false }).limit(1500),
+        supabase.from("saved_words").select("word_id", { count: "exact", head: true }),
+        supabase.from("profiles").select("display_name,daily_goal_minutes,jlpt_target").eq("user_id", user.id).maybeSingle(),
+      ]);
+      if (profileResult.data?.display_name) displayName = String(profileResult.data.display_name);
+      if (profileResult.data?.daily_goal_minutes) dashboard.dailyGoal = Number(profileResult.data.daily_goal_minutes);
+      if (profileResult.data?.jlpt_target) dashboard.jlptTarget = String(profileResult.data.jlpt_target);
+      dashboard.savedWords = savedResult.error ? null : savedResult.count ?? 0;
+      dashboard.error = Boolean(sessionsResult.error);
+      if (!sessionsResult.error && sessionsResult.data) {
+        const minutesByDate = new Map<string, number>();
+        for (const session of sessionsResult.data) {
+          const day = String(session.started_at).slice(0, 10);
+          minutesByDate.set(day, (minutesByDate.get(day) || 0) + Number(session.minutes_studied));
+        }
+        dashboard.minutesToday = minutesByDate.get(today) || 0;
+        const weekday = (now.getUTCDay() + 6) % 7;
+        const monday = new Date(Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate() - weekday));
+        dashboard.weeklyMinutes = Array.from({ length: 7 }, (_, i) => {
+          const d = new Date(monday);
+          d.setUTCDate(monday.getUTCDate() + i);
+          return minutesByDate.get(d.toISOString().slice(0, 10)) || 0;
+        });
+        dashboard.totalMinutes = [...minutesByDate.values()].reduce((sum, value) => sum + value, 0);
+        const studyDays = new Set(minutesByDate.keys());
+        const todayDate = new Date(`${today}T00:00:00.000Z`);
+        if (!studyDays.has(today)) todayDate.setUTCDate(todayDate.getUTCDate() - 1);
+        while (studyDays.has(todayDate.toISOString().slice(0, 10)) && dashboard.streak < 400) {
+          dashboard.streak += 1;
+          todayDate.setUTCDate(todayDate.getUTCDate() - 1);
+        }
+      }
+    }
   }
+
+  if (user) return <Dashboard locale={locale} name={displayName} email={user.email || ""} data={dashboard} />;
 
   return (
     <main className="shell">
@@ -31,17 +74,7 @@ export default async function Home({ params }: { params: Promise<{ locale: strin
           <h1>{t("title")}</h1>
           <p className="intro">{t("intro")}</p>
           <p className="feature-list">{t("features")}</p>
-          {user ? (
-            <div className="account-card">
-              <p className="eyebrow">{t("account")}</p>
-              <h2>{t("dashboard")}, {user.user_metadata.display_name || user.email}</h2>
-              <p>{t("signedIn")}</p>
-              <div className="button-row">
-                <Link className="button secondary" href={`/${locale}/admin`}>{t("admin")}</Link>
-                <form action={signOut}><input type="hidden" name="locale" value={locale} /><button className="button quiet" type="submit">{t("signout")}</button></form>
-              </div>
-            </div>
-          ) : hasSupabaseConfig() ? (
+          {hasSupabaseConfig() ? (
             <div className="button-row"><Link className="button primary" href={`/${locale}/signup`}>{t("signup")}</Link><Link className="button secondary" href={`/${locale}/login`}>{t("login")}</Link></div>
           ) : (
             <div className="setup-note" role="status"><span aria-hidden="true">↗</span>{t("setup")}</div>

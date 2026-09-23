@@ -1,0 +1,1 @@
+export default function Loading(){return <main className="loading-screen" aria-busy="true" aria-label="Loading"><span className="skeleton loading-line"/><span className="skeleton loading-block"/><span className="skeleton loading-block"/></main>}
