@@ -6,8 +6,14 @@ import { routing } from "@/i18n/routing";
 import "../globals.css";
 
 export const metadata: Metadata = {
-  title: "Nihongo JLPT — Япон хэлний сургалт",
-  description: "Монгол, англи, япон хэлээр JLPT N5–N1 түвшинд суралцах платформ.",
+  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000"),
+  title: { default: "Nihongo — Япон хэлээ өдөр бүр ахиул", template: "%s | Nihongo" },
+  description: "Монгол хэлээр хирагана, катакана болон JLPT N5–N1 түвшний япон хэлээ алхам алхмаар сураарай.",
+  applicationName: "Nihongo",
+  keywords: ["япон хэл сурах", "JLPT бэлтгэл", "хирагана дасгал", "катакана сурах", "япон хэл монгол", "JLPT N5", "япон хэлний үг цээжлэх"],
+  openGraph: { type: "website", siteName: "Nihongo", locale: "mn_MN", title: "Nihongo — Япон хэлээ өдөр бүр ахиул", description: "Монгол хэлээр япон хэл болон JLPT-д шат дараатай бэлдээрэй.", images: [{ url: "/og-image.svg", width: 1200, height: 630, alt: "Nihongo — Япон хэлний сургалт" }] },
+  twitter: { card: "summary_large_image", title: "Nihongo — Япон хэлээ өдөр бүр ахиул", description: "Монгол хэлээр япон хэл болон JLPT-д шат дараатай бэлдээрэй.", images: ["/og-image.svg"] },
+  alternates: { languages: { mn: "/mn", en: "/en", ja: "/ja" } },
   manifest: "/manifest.webmanifest",
   icons: { icon: "/icon.svg" },
 };
