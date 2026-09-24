@@ -1,5 +1,6 @@
 name: Phase 3.5 production QA
 on:
+  workflow_dispatch:
   push:
     branches: [phase-3.5-production-qa]
   pull_request:
@@ -24,7 +25,8 @@ jobs:
             node --check "$f"
           done
       - name: Manifest validation
-        run: node -e "JSON.parse(require('fs').readFileSync('manifest.webmanifest','utf8')); console.log('manifest: PASS')"
+        run: |
+          node -e "JSON.parse(require('fs').readFileSync('manifest.webmanifest','utf8')); console.log('manifest: PASS')"
       - name: Local asset reference audit
         run: |
           node <<'NODE'

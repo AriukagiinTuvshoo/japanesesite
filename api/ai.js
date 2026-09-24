@@ -65,6 +65,7 @@ module.exports=async function(req,res){
 
   if(hasOwn(body,'messages')&&!Array.isArray(body.messages))return send(res,400,{code:'INVALID_MESSAGES',message:'Invalid message history.'});
   const rawMessages=Array.isArray(body.messages)?body.messages:[];
+  if(rawMessages.length>MAX_MESSAGES)return send(res,400,{code:'TOO_MANY_MESSAGES',message:'Too many chat messages.'});
   const normalizedMessages=[];
   for(const m of rawMessages.slice(-MAX_MESSAGES)){
     if(!m||typeof m!=='object'||(m.role!=='user'&&m.role!=='assistant'))return send(res,400,{code:'INVALID_MESSAGE_ROLE',message:'Unsupported message role.'});
@@ -83,7 +84,7 @@ module.exports=async function(req,res){
   const context=body.context&&typeof body.context==='object'?body.context:{};
   let contextText='';
   try{contextText=JSON.stringify(context);}catch{return send(res,400,{code:'INVALID_CONTEXT',message:'Invalid learning context.'});}
-  if(contextText.length>MAX_CONTEXT_CHARS)return send(res,413,{code:'CONTEXT_TOO_LARGE',message:'Learning context is too large.'});
+  if(contextText.length>MAX_CONTEXT_CHARS)return send(res,400,{code:'CONTEXT_TOO_LARGE',message:'Learning context is too large.'});
 
   if(hasOwn(body,'contentType')&&body.contentType!==null&&(!ALLOWED_CONTENT_TYPES.has(String(body.contentType)))){
     return send(res,400,{code:'INVALID_CONTENT_TYPE',message:'Unsupported learning content type.'});
