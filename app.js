@@ -165,7 +165,8 @@ function savePhase1Session(){
     const yesterdayDate=new Date();yesterdayDate.setDate(yesterdayDate.getDate()-1);
     const yesterday=window.NihongoDate&&window.NihongoDate.localDayKey?window.NihongoDate.localDayKey(yesterdayDate):[yesterdayDate.getFullYear(),String(yesterdayDate.getMonth()+1).padStart(2,'0'),String(yesterdayDate.getDate()).padStart(2,'0')].join('-');
     const old=Number(stored('nihongo-streak','0'));
-    localStorage.setItem('nihongo-streak',String(last===yesterday?old+1:1));
+    const next=last===today?old:(last===yesterday?old+1:1);
+    localStorage.setItem('nihongo-streak',String(next));
     localStorage.setItem('nihongo-last-study',today);
   }catch{}
   try{if(window.LearningStore)window.LearningStore.syncFromLegacy()}catch{}
