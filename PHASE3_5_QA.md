@@ -1,52 +1,152 @@
-# Phase 3.5 Production QA Report
+# Phase 3.6 Production Verification Report
 
 ## Scope
 
-Phase 3.5 hardens the Phase 3 AI Teacher without replacing the existing learning engine, QuizEngine, review scheduler, timer, progress engine, or localStorage architecture.
+Phase 3.6 verifies the actual Phase 3.5 repository state without replacing the static PWA architecture, QuizEngine, review scheduler, progress engine, timer, or local learning state.
 
-## Test matrix
+## Verification layers
 
-| Area | Test | Result | Evidence |
-|---|---|---|---|
-| Git history | Phase 1 → Phase 2 → Phase 2.5 → Phase 3 dependency order | PASS | Branches and Phase 3 comparison inspected |
-| Dashboard / core learning | Phase 1/2/2.5 source regression | PASS (source audit) | Existing engine and routes retained |
-| Vocabulary | Real dataset IDs and AI context path | PASS (source audit) | AIContextBuilder + AIActions + QuizEngine integration inspected |
-| Grammar | Real pattern/example context | PASS (source audit) | Existing grammar normalization reused |
-| Kanji | Derived-only source disclosure | PASS (source audit) | Kanji context now exposes `derived-from-vocabulary` |
-| Quiz | Validated AI IDs delegate to existing QuizEngine | PASS (source audit) | No second scoring engine introduced |
-| Mistakes | Real mistake IDs only | PASS (source audit) | REVIEW_MISTAKES validation and grouping |
-| Review | Existing review scheduler remains authoritative | PASS (source audit) | LearningStore.recordAnswer/scheduleReview unchanged |
-| Study plan | Advisory only; no direct progress mutation | PASS (source audit) | Only `ai.lastPlan` is persisted |
-| Chat history | Bounded to 50; clear preserves progress | PASS (source audit) | v2 state normalization and AI methods inspected |
-| API config | Missing key/URL/model → safe 503 path | PASS (source audit) | `api/ai.js` requires all three |
-| Request validation | JSON/body/message/action/count/mode/context limits | PASS (source audit) | Explicit 400/413/503 guards |
-| Provider error | Provider error/empty response/timeout normalized | PASS (source audit) | 502/504 handling |
-| Prompt injection | User/context treated as untrusted data | PASS (source audit) | Server system instruction and role filtering |
-| Structured output | IDs/types/levels/counts/modes validated | PASS (source audit) | `ai-actions.js` |
-| Security scan | Common secret patterns / eval / new Function | PASS (repository code search) | No matches returned |
-| PWA cache | Phase 3.5 cache version + API bypass | PASS (source audit) | `nihongo-phase3.5-v7`; `/api/` bypass |
-| Mobile AI UX | 320/375/390/430 layout rules reviewed | PASS (source audit) | 430px breakpoint, safe-area input, wrapping |
-| Desktop AI UX | Loading/input/error structure reviewed | PASS (source audit) | Sticky composer, scroll container, retry |
-| Double submission | UI-side loading lock | PASS (source audit) | Send/input/quick actions disabled while loading |
-| Network errors | Offline + timeout/server error UI paths | PASS (source audit) | Friendly localized messages + retry |
-| Accessibility | Enter send, Shift+Enter newline, aria state/live region | PASS (source audit) | `aria-busy`, role=log, aria-live |
-| Production AI | Real provider configuration | NOT VERIFIED | No server environment secrets are exposed to this audit |
-| Browser E2E | Real click-through on deployed app | UNAVAILABLE | Deployment/browser path unavailable in this environment |
-| CI runtime harness | Phase 3.5 GitHub Actions | UNAVAILABLE | Run created but reported failure with 0 jobs; no executable job logs were available |
+| Layer | Result | Evidence |
+|---|---|---|
+| Repository / branch | PASS | phase-3.5-production-qa, HEAD verified |
+| Local npm scripts | UNAVAILABLE — NOT VERIFIED | No package.json exists in the repository |
+| API runtime contract | PASS | Direct Node runtime harness executed locally for configuration, validation, provider error, prompt-injection boundary and normalized responses |
+| AI action validator runtime | PASS | Direct Node runtime harness executed against ai-actions.js with real-style IDs and invalid cases |
+| Repository QA harness | PASS | GitHub Actions run 36003559910 completed successfully |
+| JavaScript syntax | PASS | CI node --check passed for application and API JS files |
+| Manifest | PASS | CI JSON parse passed |
+| Local asset audit | PASS | CI found no missing local referenced assets |
+| Security source scan | PASS | CI secret-pattern / eval / new Function checks passed |
+| Production AI provider | NOT VERIFIED | Production environment credentials/configuration are not exposed to this verification environment |
+| Browser E2E | UNAVAILABLE — NOT VERIFIED | No browser automation is available in this environment |
+| Vercel deployment | NOT VERIFIED / BLOCKED | Current GitHub status is Vercel: failure with the build-rate-limit target |
 
-## Security conclusions
+## API verification
 
-- `AI_API_KEY` is read only in `api/ai.js`.
-- Provider URL and model are server-side configuration.
-- Client `system` messages are rejected.
-- AI output is validated before any learning action.
-- No AI-generated JavaScript is executed.
-- AI cannot directly write arbitrary localStorage or learning progress.
-- Service worker does not cache `/api/*` or AI responses.
+The secure API boundary was verified for:
 
-## Production readiness limitations
+- missing AI_API_KEY -> 503
+- missing AI_PROVIDER_URL -> 503
+- missing AI_MODEL -> 503
+- malformed JSON -> 400
+- invalid action -> 400
+- excessive message history -> 400
+- oversized request -> 413
+- oversized context -> 400
+- invalid JLPT level -> 400
+- invalid content type -> 400
+- invalid question count -> 400
+- invalid quiz mode -> 400
+- duplicate candidate IDs -> 400
+- client-provided system role -> 400
+- provider failure -> 502
+- malformed provider response -> 502
+- provider timeout -> 504
+- successful mocked provider response -> 200
 
-1. A real provider has not been authenticated/configured in this environment, so production AI behavior cannot be honestly marked live.
-2. Browser E2E could not be completed against the deployed application.
-3. The repository QA workflow was added, but the observed GitHub Actions run ended before any job was available; this prevents claiming a green CI execution for Phase 3.5.
-4. A final release should run the complete browser journey on an accessible deployment with real server environment configuration.
+The server does not execute AI-generated actions. Dataset membership for AI output remains enforced by the browser-side AIActions validator before existing learning systems are invoked.
+
+## AI action validation
+
+Runtime verification covered:
+
+- supported action whitelist
+- invalid action rejection
+- real dataset ID acceptance
+- nonexistent dataset ID rejection
+- duplicate quiz IDs rejection
+- valid quiz modes
+- quiz count 1-10
+- JLPT level validation
+- study-plan minutes 1-60
+- duplicate study-plan content rejection
+- real mistake ID validation
+- duplicate mistake ID rejection
+
+Study plans remain advisory and do not directly change learning progress.
+
+## Learning-state regression
+
+The QA harness verified:
+
+- nihongo-learning-state-v2 loads
+- AI state exists inside the same v2 state
+- AI chat history is capped at 50 messages
+- real quiz mistakes are recorded
+- real N5 vocabulary / grammar / derived Kanji datasets are available
+- validated AI quiz IDs produce questions through the existing QuizEngine
+- ai.lastPlan persists without mutating progress
+- clear AI chat history preserves learning progress
+- target JLPT context works for N5-N1
+
+Timer and review scheduling were inspected at source level and were not rewritten by Phase 3.6.
+
+## Security verification
+
+- API credentials are read only in api/ai.js.
+- No API secret is placed in frontend code, localStorage, manifest or service worker.
+- Client system messages are rejected.
+- User/context data is treated as untrusted input by the server prompt.
+- Provider credentials are not copied into the provider prompt.
+- Provider/internal errors are normalized before reaching the client.
+- No eval() or new Function() execution is present in the checked application source.
+- AI output is validated before invoking the existing learning engine.
+- AI does not directly mutate arbitrary localStorage or learning progress.
+
+## PWA verification
+
+Verified in source and CI:
+
+- cache: nihongo-phase3.5-v7
+- static learning assets remain in the cache
+- /api/* bypasses the service-worker fetch handler
+- POST requests are not cached
+- AI response caching is disabled on the client request
+- manifest is valid
+
+Actual offline click-through remains UNAVAILABLE — NOT VERIFIED.
+
+## CI verification
+
+The Phase 3.5 workflow originally produced a failed run with zero jobs. Phase 3.6 identified the actual cause: the manifest validation command contained a colon inside an unquoted YAML scalar.
+
+That workflow was corrected, and the latest run:
+
+- workflow: Phase 3.5 production QA
+- run: 36003559910
+- commit: 978859ef3f7a01f49dadb90bcaa726cc1aff088f
+- result: SUCCESS
+- executable job: qa
+
+The QA harness itself originally failed because its Node sandbox did not provide browser-like DOM elements. That harness was corrected; the next run passed.
+
+## Previously identified regression items
+
+| Item | Result |
+|---|---|
+| Missing model -> 503 | PASS |
+| Client system injection blocked | PASS |
+| Request limits | PASS |
+| Quiz/action validation | PASS |
+| Study-plan duplicate rejection | PASS |
+| Mistake duplicate/empty validation | PASS |
+| Context summary avoids repeated state reload | PASS |
+| Double-submit protection | SOURCE VERIFIED |
+| Retry UX | SOURCE VERIFIED |
+| Explain Retry context preservation | SOURCE VERIFIED |
+| Mixed mistake review | SOURCE VERIFIED |
+| Mobile AI composer | SOURCE VERIFIED |
+| /api service-worker caching bypass | PASS |
+| Six-item mobile navigation | SOURCE VERIFIED |
+| Kanji derived-only context | PASS |
+
+## Production limitations
+
+1. Real production provider credentials/configuration are not available for verification.
+2. Browser E2E is UNAVAILABLE — NOT VERIFIED.
+3. Current Vercel status for the Phase 3.6 commit is failure and points to the free deployment-rate-limit target, so the deployed build could not be used for browser verification.
+4. No package.json exists, so npm test/lint/typecheck/build commands are not available.
+
+## Release interpretation
+
+Source-level, direct runtime, and CI verification now provide substantial evidence that the Phase 3.5 code path is internally consistent. Production provider behavior, browser E2E, and deployment runtime remain unverified.

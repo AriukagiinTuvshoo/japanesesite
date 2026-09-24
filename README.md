@@ -51,3 +51,9 @@ Local development with `python3 -m http.server 8000` exercises the frontend only
 Phase 3.5 adds a repository QA harness under `qa/` and a GitHub Actions workflow under `.github/workflows/`. The checks cover state regression, AI request limits, action validation, provider error normalization, unsafe execution scans, manifest parsing and local asset references.
 
 Production AI configuration remains server-side only via `AI_API_KEY`, `AI_PROVIDER_URL` and `AI_MODEL`; no secret values belong in this repository. The current environment could not complete real browser click-through testing, so browser E2E must be verified on an accessible deployed build before release.
+
+## Phase 3.6 — Production Verification
+
+Phase 3.6 verified the current repository state with direct Node runtime checks for the AI API boundary and ai-actions.js, plus a successful GitHub Actions QA run. The workflow now runs an executable qa job. The repository has no package.json, so npm-based test/lint/typecheck/build commands are not defined.
+
+The current commit has not been verified against a live production AI provider because server credentials are not exposed to this environment. Browser E2E remains unverified because browser automation is unavailable here. GitHub reports the current Vercel status as failed with a deployment-rate-limit target, so the deployed build is not a valid E2E target yet.
