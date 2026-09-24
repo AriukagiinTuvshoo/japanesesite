@@ -202,7 +202,8 @@ function startPhase1Session(activity){
 function bindPhase1UI(){
   $('#study-session-btn')?.addEventListener('click',()=>startPhase1Session());
   $('#study-session-pause')?.addEventListener('click',()=>phase1Paused?resumePhase1Session():pausePhase1Session());
-  document.addEventListener('visibilitychange',()=>{if(document.hidden&&phase1StartedAt)updatePhase1Timer()});
+  document.addEventListener('visibilitychange',()=>{if(document.hidden&&(phase1StartedAt||phase1Paused))updatePhase1Timer()});
+  window.addEventListener('pagehide',()=>{if(phase1StartedAt||phase1Paused)stopPhase1Session()});
 }
 
 const originalLocalize=localize;
