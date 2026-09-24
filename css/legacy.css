@@ -1,0 +1,2 @@
+/* Compatibility layer. Keep legacy selectors intact during incremental v6 migration. */
+:root{--shell-line:var(--color-border);--shell-sidebar:248px}
