@@ -1,0 +1,54 @@
+name: Phase 3.5 production QA
+on:
+  workflow_dispatch:
+  push:
+    branches: [phase-3.5-production-qa]
+  pull_request:
+    branches: [main]
+permissions:
+  contents: read
+jobs:
+  qa:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - name: Runtime smoke tests
+        run: node qa/phase-3.5-smoke.cjs
+      - name: JavaScript syntax
+        run: |
+          for f in app.js learning-engine.js learning-ui.js ai-context.js ai-actions.js ai-provider.js ai-teacher.js sw.js api/ai.js; do
+            node --check "$f"
+          done
+      - name: Manifest validation
+        run: |
+          node -e "JSON.parse(require('fs').readFileSync('manifest.webmanifest','utf8')); console.log('manifest: PASS')"
+      - name: Local asset reference audit
+        run: |
+          node <<'NODE'
+          const fs=require('fs');
+          const html=fs.readFileSync('index.html','utf8');
+          const refs=[...html.matchAll(/(?:src|href)="([^"]+)"/g)].map(m=>m[1]).filter(x=>!/^https?:|^mailto:|^#/.test(x));
+          const missing=refs.filter(x=>!fs.existsSync(x));
+          if(missing.length){console.error('Missing local assets:',missing);process.exit(1);}
+          console.log('local assets: PASS');
+          NODE
+      - name: Security source scan
+        run: |
+          if grep -RInE --exclude-dir=.git --exclude='PHASE3_5_QA.md' '(sk-[A-Za-z0-9]{20,}|ghp_[A-Za-z0-9]{20,}|xox[baprs]-[A-Za-z0-9-]{20,}|-----BEGIN [A-Z ]*PRIVATE KEY-----)' .; then
+            echo "Potential credential material found"
+            exit 1
+          fi
+          if grep -RInE --include='*.js' --include='*.html' 'eval\(|new Function\(' .; then
+            echo "Unsafe dynamic execution found"
+            exit 1
+          fi
+          if grep -nE '^const CORE=.*api/|api/ai\.js' sw.js; then
+            echo "API endpoint was added to the static cache"
+            exit 1
+          fi
+          echo "security source scan: PASS"
