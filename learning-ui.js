@@ -279,7 +279,7 @@
   }
 
   function refresh(){
-    LearningStore.syncFromLegacy();mount();renderVocabulary();setupKanji();setupGrammar();renderMistakes();renderProgress();renderStudy();dashboardBridge();
+    LearningStore.syncFromLegacy();ensureThemeControl();mount();renderVocabulary();setupKanji();setupGrammar();renderMistakes();renderProgress();renderStudy();dashboardBridge();
     if(!quiz)setupQuiz();
     syncNavigation();bindNavObserver();
   }
