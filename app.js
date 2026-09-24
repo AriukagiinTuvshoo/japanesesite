@@ -76,7 +76,7 @@ function renderLevels(){ $('#levels').innerHTML=LEVELS.map((l,i)=>`<button class
 function renderLessons(){const host=$('#lesson-path'),lessons=level==='N5'?STARTER_LESSONS:MORE_LESSONS[level],labels={lesson:['ХИЧЭЭЛ','LESSON','レッスン'],open:['Үзэх','Open lesson','開く'],close:['Хураах','Close','閉じる'],example:['Жишээ','EXAMPLE','例文'],target:['Өнөөдөр сурах нь','ӨНӨӨДРИЙН ХИЧЭЭЛ','今日のポイント']},idx=['mn','en','ja'].indexOf(language),done=storedList('nihongo-done'),courseName=language==='ja'?`${level} レッスン`:language==='en'?`${level} guided lessons`:`${level} шатны хичээлүүд`,n=lessons.length,finished=done.filter(id=>id.startsWith(`${level}-`)&&lessons.some(x=>id===`${level}-${x.tag}`)).length;host.innerHTML=`<div class="lesson-heading"><div><span class="eyebrow">${labels.target[idx]}</span><h3>${courseName}</h3></div><span>${finished} / ${n} ${language==='ja'?'完了':language==='en'?'completed':'дууссан'}</span></div><div class="lesson-progress"><i style="width:${finished/n*100}%"></i></div><div class="lesson-grid">${lessons.map(x=>{const id=`${level}-${x.tag}`,isDone=done.includes(id);return `<article class="lesson-card"><div class="lesson-card-top"><span>${labels.lesson[idx]} ${x.tag}</span><button class="lesson-check ${isDone?'done':''}" data-lesson="${id}" aria-label="${language==='ja'?'完了として記録':language==='en'?'Mark lesson complete':'Хичээл дуусгасныг тэмдэглэх'}" title="${language==='ja'?'完了として記録':language==='en'?'Mark lesson complete':'Хичээл дуусгасныг тэмдэглэх'}">${isDone?'✓':'○'}</button></div><h4>${x.title[idx]}</h4><p class="lesson-jp" lang="ja">${x.jp}</p><p class="lesson-reading" lang="ja">${x.reading}</p><button class="lesson-toggle" aria-expanded="false">${labels.open[idx]} <span>＋</span></button><div class="lesson-body" hidden><p>${language==='en'?x.en:language==='ja'?x.ja:x.mn}</p><div class="lesson-example"><small>${labels.example[idx]}</small><strong lang="ja">${language==='ja'?(x.grammarJa||x.grammar):language==='en'?x.grammarEn:x.grammar}</strong></div></div></article>`}).join('')}</div>`;host.querySelectorAll('.lesson-check').forEach(button=>button.onclick=()=>{const id=button.dataset.lesson,next=done.includes(id)?done.filter(item=>item!==id):[...done,id];try{localStorage.setItem('nihongo-done',JSON.stringify(next))}catch{}renderLessons()});host.querySelectorAll('.lesson-toggle').forEach(button=>button.onclick=()=>{const body=button.nextElementSibling,open=button.getAttribute('aria-expanded')==='true';button.setAttribute('aria-expanded',String(!open));body.hidden=open;button.innerHTML=`${open?labels.open[idx]:labels.close[idx]} <span>${open?'＋':'−'}</span>`})}
 function renderWords(){const term=$('#word-search').value.trim().toLocaleLowerCase(),filter=$('#word-level').value;const savedWords=storedList('nihongo-saved'),found=WORDS.filter(w=>(filter==='all'||w.level===filter)&&(!savedOnly||savedWords.includes(w.jp))&&[w.jp,w.reading,w.mn,w.en].some(s=>s.toLocaleLowerCase().includes(term)));$('#saved-only').textContent=savedOnly?tx('allWords')+' ✓':'♡ '+tx('savedOnly');$('#saved-only').setAttribute('aria-pressed',String(savedOnly));$('#word-count').textContent=found.length+' '+tx('countWords');$('#word-list').innerHTML=found.length?found.map(w=>`<article class="word-card"><div class="word-top"><span class="word-level ${w.level.toLowerCase()}">${w.level}</span><button class="icon-action audio-word" data-jp="${w.jp}" aria-label="${tx('play')}" title="${tx('play')}">🔊</button><button class="icon-action save-word" data-jp="${w.jp}" aria-label="${tx('bookmark')}" title="${tx('bookmark')}">♡</button></div><h3 lang="ja">${w.jp}</h3><div class="word-reading" lang="ja">${w.reading}</div><div class="meaning-row"><span>MN</span>${w.mn}</div><div class="meaning-row"><span>EN</span>${w.en}</div><div class="word-example" lang="ja">${w.example}<small lang="${language==='en'?'en':'mn'}">${language==='en'?w.exEn:language==='ja'?w.exMn+' / '+w.exEn:w.exMn+' · '+w.exEn}</small></div></article>`).join(''):`<div class="empty-words">${savedOnly?tx('savedEmpty'):tx('searchEmpty')}</div>`;const saved=savedWords;document.querySelectorAll('.save-word').forEach(b=>{if(saved.includes(b.dataset.jp)){b.textContent='♥';b.classList.add('saved')}b.onclick=()=>{const curr=storedList('nihongo-saved');const next=curr.includes(b.dataset.jp)?curr.filter(x=>x!==b.dataset.jp):[...curr,b.dataset.jp];localStorage.setItem('nihongo-saved',JSON.stringify(next));renderWords()}});document.querySelectorAll('.audio-word').forEach(b=>b.onclick=()=>{if('speechSynthesis'in window){speechSynthesis.cancel();const voice=new SpeechSynthesisUtterance(b.dataset.jp);voice.lang='ja-JP';speechSynthesis.speak(voice)}})}
 function drawQuestion(){const q=QUIZ[qi];answered=false;$('#q-count').textContent=`${qi+1} ${tx('of')} ${QUIZ.length}`;$('#quiz-progress').style.width=`${(qi+1)/QUIZ.length*100}%`;$('#question').setAttribute('lang',language==='ja'?'ja':'mn');$('#question').textContent=language==='mn'?q.q:language==='en'?q.en:q.ja;$('#feedback').textContent='';$('#next-question').disabled=true;$('#next-question').innerHTML=`${qi===QUIZ.length-1?tx('restart'):tx('next')} <span>→</span>`;$('#answers').innerHTML=q.a[language].map((a,i)=>`<button class="answer" data-i="${i}">${String.fromCharCode(65+i)}　${a}</button>`).join('');document.querySelectorAll('.answer').forEach(b=>b.onclick=()=>{if(answered)return;answered=true;const i=Number(b.dataset.i),right=i===q.ok;if(right)quizCorrect++;b.classList.add(right?'correct':'wrong');document.querySelectorAll('.answer')[q.ok].classList.add('correct');$('#feedback').textContent=(right?tx('correct'):tx('incorrect'))+' '+tx('explanation')+': '+q.why[language]+(qi===QUIZ.length-1?' · '+tx('scoreLabel')+' '+quizCorrect+'/'+QUIZ.length:'');$('#next-question').disabled=false})}
-$('#language-picker').onchange=e=>{language=e.target.value;try{localStorage.setItem('nihongo-language',language)}catch{}localize()};$('#word-search').oninput=renderWords;$('#word-level').onchange=renderWords;$('#saved-only').onclick=()=>{savedOnly=!savedOnly;renderWords()};$('#next-question').onclick=()=>{if(qi===QUIZ.length-1){qi=0;quizCorrect=0}else qi++;drawQuestion()};$('#plan-btn').onclick=()=>{$('#vocabulary').scrollIntoView({behavior:'smooth'});if(!phase1StartedAt)startPhase1Session()};$('#streak').onclick=()=>$('#plan').scrollIntoView({behavior:'smooth'});function updateStreak(){$('#streak-count').textContent=stored('nihongo-streak','0');$('#q-level').textContent=`N5 · ${tx('dailyLabel')}`}localize();updateStreak();
+$('#language-picker').onchange=e=>{language=e.target.value;try{localStorage.setItem('nihongo-language',language)}catch{}localize()};$('#word-search').oninput=renderWords;$('#word-level').onchange=renderWords;$('#saved-only').onclick=()=>{savedOnly=!savedOnly;renderWords()};$('#next-question').onclick=()=>{if(qi===QUIZ.length-1){qi=0;quizCorrect=0}else qi++;drawQuestion()};$('#plan-btn').onclick=()=>{$('#vocabulary').scrollIntoView({behavior:'smooth'});if(!phase1StartedAt)startPhase1Session()};$('#streak').onclick=()=>$('#plan').scrollIntoView({behavior:'smooth'});function updateStreak(){$('#streak-count').textContent=stored('nihongo-streak','0');$('#q-level').textContent=`${level} · ${tx('dailyLabel')}`}localize();updateStreak();
 
 /* === Phase 1 dashboard / local progress foundation === */
 const PHASE1 = {
@@ -87,11 +87,14 @@ const PHASE1 = {
     try { const value=JSON.parse(localStorage.getItem(this.sessionsKey)||'[]'); return Array.isArray(value)?value:[]; } catch { return []; }
   },
   saveSessions(items){ try{ localStorage.setItem(this.sessionsKey,JSON.stringify(items.slice(-200))); }catch{} },
-  todayKey(){ return new Date().toISOString().slice(0,10); },
+  todayKey(){
+    if(window.NihongoDate&&window.NihongoDate.localDayKey)return window.NihongoDate.localDayKey(new Date());
+    const d=new Date();return [d.getFullYear(),String(d.getMonth()+1).padStart(2,'0'),String(d.getDate()).padStart(2,'0')].join('-');
+  },
   dayMinutes(day){ return this.getSessions().filter(s=>s.day===day).reduce((sum,s)=>sum+Number(s.duration||0),0)/60; },
   daysStudied(){ return new Set(this.getSessions().filter(s=>Number(s.duration||0)>0).map(s=>s.day)).size; }
 };
-let phase1Timer=null, phase1StartedAt=null, phase1ActiveActivity='study';
+let phase1Timer=null, phase1StartedAt=null, phase1SessionStartedAt=null, phase1ElapsedMs=0, phase1Paused=false, phase1ActiveActivity='study';
 
 function phase1Lessons(){
   const list = level==='N5' ? STARTER_LESSONS : MORE_LESSONS[level];
@@ -126,7 +129,7 @@ function renderDashboard(){
   if(chart&&labels){
     const days=[], todayDate=new Date();
     for(let i=6;i>=0;i--){const d=new Date(todayDate);d.setDate(todayDate.getDate()-i);days.push(d);}
-    const vals=days.map(d=>PHASE1.dayMinutes(d.toISOString().slice(0,10)));
+    const vals=days.map(d=>PHASE1.dayMinutes(window.NihongoDate&&window.NihongoDate.localDayKey?window.NihongoDate.localDayKey(d):PHASE1.todayKey()));
     const max=Math.max(1,...vals);
     chart.innerHTML=vals.map(v=>'<div class="activity-bar '+(v===0?'zero':'')+'" style="height:'+Math.max(v===0?5:10,Math.round(v/max*82))+'px" title="'+Math.floor(v)+' мин"></div>').join('');
     labels.innerHTML=days.map(d=>'<span>'+new Intl.DateTimeFormat('en-US',{weekday:'narrow'}).format(d)+'</span>').join('');
@@ -136,41 +139,72 @@ function renderDashboard(){
   if(settingLevel) settingLevel.value=level;
   if(settingGoal) settingGoal.value=String(goal);
 }
+function currentPhase1ElapsedMs(){
+  if(!phase1StartedAt)return Math.max(0,phase1ElapsedMs);
+  return Math.max(0,phase1ElapsedMs+(phase1Paused?0:Date.now()-phase1StartedAt));
+}
 function updatePhase1Timer(){
-  if(!phase1StartedAt){ $('#session-timer')&&($('#session-timer').textContent='00:00'); return; }
-  const elapsed=Math.max(0,Date.now()-phase1StartedAt), sec=Math.floor(elapsed/1000), mm=String(Math.floor(sec/60)).padStart(2,'0'), ss=String(sec%60).padStart(2,'0');
+  const elapsed=currentPhase1ElapsedMs(),sec=Math.floor(elapsed/1000),mm=String(Math.floor(sec/60)).padStart(2,'0'),ss=String(sec%60).padStart(2,'0');
   $('#session-timer')&&($('#session-timer').textContent=mm+':'+ss);
+  const pause=$('#study-session-pause');
+  if(pause){
+    pause.hidden=!phase1StartedAt&&!phase1Paused;
+    pause.textContent=phase1Paused?'Үргэлжлүүлэх':'Түр зогсоох';
+    pause.setAttribute('aria-pressed',String(phase1Paused));
+  }
 }
 function setStudyActivity(activity){phase1ActiveActivity=['vocabulary','kanji','grammar','quiz','reading','listening','study'].includes(activity)?activity:'study';}
+function savePhase1Session(){
+  const elapsed=Math.floor(currentPhase1ElapsedMs()/1000);
+  if(!phase1SessionStartedAt||elapsed<5)return false;
+  const sessions=PHASE1.getSessions();
+  sessions.push({day:PHASE1.todayKey(),startedAt:new Date(phase1SessionStartedAt).toISOString(),endedAt:new Date().toISOString(),duration:elapsed,activity:phase1ActiveActivity});
+  PHASE1.saveSessions(sessions);
+  try{
+    const today=PHASE1.todayKey(),last=stored('nihongo-last-study','');
+    const yesterdayDate=new Date();yesterdayDate.setDate(yesterdayDate.getDate()-1);
+    const yesterday=window.NihongoDate&&window.NihongoDate.localDayKey?window.NihongoDate.localDayKey(yesterdayDate):[yesterdayDate.getFullYear(),String(yesterdayDate.getMonth()+1).padStart(2,'0'),String(yesterdayDate.getDate()).padStart(2,'0')].join('-');
+    const old=Number(stored('nihongo-streak','0'));
+    localStorage.setItem('nihongo-streak',String(last===yesterday?old+1:1));
+    localStorage.setItem('nihongo-last-study',today);
+  }catch{}
+  try{if(window.LearningStore)window.LearningStore.syncFromLegacy()}catch{}
+  return true;
+}
+function stopPhase1Session(){
+  savePhase1Session();
+  phase1StartedAt=null;phase1SessionStartedAt=null;phase1ElapsedMs=0;phase1Paused=false;
+  if(phase1Timer)clearInterval(phase1Timer);phase1Timer=null;phase1ActiveActivity='study';
+  $('#study-session-btn')&&($('#study-session-btn').textContent='Суралцах эхлүүлэх');
+  updatePhase1Timer();updateStreak();renderDashboard();
+}
+function pausePhase1Session(){
+  if(!phase1StartedAt||phase1Paused)return;
+  phase1ElapsedMs=currentPhase1ElapsedMs();phase1StartedAt=null;phase1Paused=true;
+  if(phase1Timer)clearInterval(phase1Timer);phase1Timer=null;updatePhase1Timer();
+}
+function resumePhase1Session(){
+  if(!phase1Paused)return;
+  phase1StartedAt=Date.now();phase1Paused=false;phase1Timer=setInterval(updatePhase1Timer,1000);updatePhase1Timer();
+}
 function startPhase1Session(activity){
-  if(activity) setStudyActivity(activity);
-  if(phase1StartedAt){
-    const duration=Math.floor((Date.now()-phase1StartedAt)/1000);
-    if(duration>=5){
-      const sessions=PHASE1.getSessions();
-      sessions.push({day:PHASE1.todayKey(),startedAt:new Date(phase1StartedAt).toISOString(),endedAt:new Date().toISOString(),duration,activity:phase1ActiveActivity});
-      PHASE1.saveSessions(sessions);
-      try{const today=PHASE1.todayKey(),last=stored('nihongo-last-study',''),yesterday=new Date(Date.now()-86400000).toISOString().slice(0,10),old=Number(stored('nihongo-streak','0'));localStorage.setItem('nihongo-streak',String(last===yesterday?old+1:1));localStorage.setItem('nihongo-last-study',today);}catch{}
-      try{if(window.LearningStore)window.LearningStore.syncFromLegacy();}catch{}
-    }
-    phase1StartedAt=null; if(phase1Timer) clearInterval(phase1Timer); phase1Timer=null; phase1ActiveActivity='study';
-    $('#study-session-btn')&&($('#study-session-btn').textContent='Суралцах эхлүүлэх');
-  }else{
-    phase1StartedAt=Date.now(); phase1ActiveActivity=activity||'study'; phase1Timer=setInterval(updatePhase1Timer,1000);
-    $('#study-session-btn')&&($('#study-session-btn').textContent='Сургалтаа дуусгах');
+  if(activity)setStudyActivity(activity);
+  if(phase1StartedAt||phase1Paused){
+    stopPhase1Session();
+    return;
   }
-  updatePhase1Timer(); updateStreak(); renderDashboard();
+  phase1SessionStartedAt=Date.now();phase1StartedAt=phase1SessionStartedAt;phase1ElapsedMs=0;phase1Paused=false;phase1ActiveActivity=activity||'study';
+  if(phase1Timer)clearInterval(phase1Timer);
+  phase1Timer=setInterval(updatePhase1Timer,1000);
+  $('#study-session-btn')&&($('#study-session-btn').textContent='Сургалтаа дуусгах');
+  updatePhase1Timer();updateStreak();renderDashboard();
 }
 function bindPhase1UI(){
-  $('#study-session-btn')?.addEventListener('click',startPhase1Session);
-  $('#setting-level')?.addEventListener('change',e=>{level=e.target.value;try{localStorage.setItem('nihongo-level',level)}catch{}renderLevels();renderDashboard();});
-  $('#setting-goal')?.addEventListener('change',e=>{try{localStorage.setItem(PHASE1.goalKey,e.target.value)}catch{}renderDashboard();});
-  document.querySelectorAll('[data-nav]').forEach(a=>a.addEventListener('click',()=>{document.querySelectorAll('[data-nav]').forEach(x=>x.classList.remove('is-active'));a.classList.add('is-active');}));
-  const targets=[...document.querySelectorAll('[data-nav]')];
-  const sections=targets.map(a=>document.getElementById(a.dataset.nav)).filter(Boolean);
-  const observer=new IntersectionObserver(entries=>{const visible=entries.filter(e=>e.isIntersecting).sort((a,b)=>b.intersectionRatio-a.intersectionRatio)[0];if(!visible)return;targets.forEach(a=>a.classList.toggle('is-active',a.dataset.nav===visible.target.id));},{rootMargin:'-20% 0px -65% 0px',threshold:[0,.15,.35]});
-  sections.forEach(s=>observer.observe(s));
+  $('#study-session-btn')?.addEventListener('click',()=>startPhase1Session());
+  $('#study-session-pause')?.addEventListener('click',()=>phase1Paused?resumePhase1Session():pausePhase1Session());
+  document.addEventListener('visibilitychange',()=>{if(document.hidden&&phase1StartedAt)updatePhase1Timer()});
 }
+
 const originalLocalize=localize;
 localize=function(){originalLocalize();renderDashboard();};
 document.addEventListener('DOMContentLoaded',()=>{bindPhase1UI();renderDashboard();});
