@@ -4,9 +4,9 @@
   var $=function(s){return document.querySelector(s)};
   var esc=function(v){return String(v==null?"":v).replace(/[&<>"']/g,function(m){return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[m]})};
   var DI={
-    mn:{all:"Бүгд",vocabulary:"Үг",kanji:"Ханз",grammar:"Дүрэм",study:"Өнөөдөр сурах",practice:"Тест",progress:"Ахиц",mistakes:"Миний алдаа",search:"Үг, ханз, дүрэм, жишээгээр хайх…",saved:"Хадгалсан",favorite:"Хадгалах",known:"Мэднэ",retry:"Дахин сурах",start:"Эхлэх",next:"Дараагийн",finish:"Дуусгах",correct:"Зөв",incorrect:"Буруу",details:"Дэлгэрэнгүй",status:"Төлөв",level:"Түвшин",today:"Өнөөдөр",review:"Давталт",due:"Давтах ёстой",empty:"Мэдээлэл олдсонгүй.",noProgress:"Одоогоор суралцсан мэдээлэл алга.",noReviews:"Өнөөдөр давтах зүйл алга.",noMistakes:"Одоогоор алдаа бүртгэгдээгүй.",accuracy:"Нарийвчлал",questions:"Асуулт",studyTime:"Суралцсан хугацаа",days:"Суралцсан өдөр",related:"Холбоотой үгс",example:"Жишээ өгүүлбэр",noExample:"Жишээ өгүүлбэр одоогоор байхгүй.",mistakeReview:"Алдаагаа давтах",retryQuiz:"Дахин тест хийх",dashboard:"Дашбоард руу",quizSetup:"Тест эхлүүлэх",questionCount:"Асуултын тоо",mode:"Горим",mistakeOnly:"Зөвхөн алдаа",mixed:"Холимог",searchResults:"Хайлтын үр дүн",planTitle:"Өнөөдөр сурах",planSub:"Өдрийн зорилго, давтах зүйл, боломжтой материалаас автоматаар тооцоолно.",newWords:"Шинэ үг",newKanji:"Шинэ ханз",newGrammar:"Шинэ дүрэм",startPlan:"Өнөөдрийн хичээл эхлүүлэх",mastered:"Эзэмшсэн",learning:"Суралцаж байна",familiar:"Танил",weak:"Сул",new:"Шинэ",derivedKanji:"Тусгай ханзны dataset байхгүй тул одоогийн бодит үгийн сан дахь ханзаас үүсгэв.",unsupported:"Энэ талбар одоогийн dataset-д байхгүй."},
-    en:{all:"All",vocabulary:"Vocabulary",kanji:"Kanji",grammar:"Grammar",study:"Today",practice:"Quiz",progress:"Progress",mistakes:"Mistakes",search:"Search vocabulary, kanji, grammar, examples…",saved:"Saved",favorite:"Save",known:"Know",retry:"Learn again",start:"Start",next:"Next",finish:"Finish",correct:"Correct",incorrect:"Incorrect",details:"Details",status:"Status",level:"Level",today:"Today",review:"Review",due:"Due",empty:"No data found.",noProgress:"No learning progress yet.",noReviews:"Nothing is due for review today.",noMistakes:"No mistakes have been recorded yet.",accuracy:"Accuracy",questions:"Questions",studyTime:"Study time",days:"Study days",related:"Related words",example:"Example",noExample:"No example sentence is available.",mistakeReview:"Review mistakes",retryQuiz:"Retry quiz",dashboard:"Dashboard",quizSetup:"Start quiz",questionCount:"Question count",mode:"Mode",mistakeOnly:"Mistakes only",mixed:"Mixed",searchResults:"Search results",planTitle:"Study today",planSub:"Calculated from your daily goal, due reviews, and available content.",newWords:"New vocabulary",newKanji:"New kanji",newGrammar:"New grammar",startPlan:"Start today’s study",mastered:"Mastered",learning:"Learning",familiar:"Familiar",weak:"Weak",new:"New",derivedKanji:"No standalone kanji dataset exists, so this module is derived from actual kanji in the current vocabulary.",unsupported:"This field is not present in the current dataset."},
-    ja:{all:"すべて",vocabulary:"語彙",kanji:"漢字",grammar:"文法",study:"今日の学習",practice:"クイズ",progress:"進捗",mistakes:"間違い",search:"語彙・漢字・文法・例文を検索…",saved:"保存済み",favorite:"保存",known:"知っている",retry:"もう一度学ぶ",start:"開始",next:"次へ",finish:"終了",correct:"正解",incorrect:"不正解",details:"詳細",status:"状態",level:"レベル",today:"今日",review:"復習",due:"復習対象",empty:"データがありません。",noProgress:"学習履歴はまだありません。",noReviews:"今日の復習はありません。",noMistakes:"まだ間違いはありません。",accuracy:"正答率",questions:"問題",studyTime:"学習時間",days:"学習日数",related:"関連語",example:"例文",noExample:"例文はありません。",mistakeReview:"間違いを復習",retryQuiz:"もう一度テスト",dashboard:"ダッシュボード",quizSetup:"テストを開始",questionCount:"問題数",mode:"モード",mistakeOnly:"間違いのみ",mixed:"ミックス",searchResults:"検索結果",planTitle:"今日の学習",planSub:"目標時間・復習・利用可能な教材から自動計算します。",newWords:"新しい語彙",newKanji:"新しい漢字",newGrammar:"新しい文法",startPlan:"今日の学習を開始",mastered:"マスター",learning:"学習中",familiar:"習得中",weak:"弱点",new:"新規",derivedKanji:"独立した漢字データセットがないため、現在の語彙に含まれる実際の漢字から表示しています。",unsupported:"現在のデータセットにこの項目がないため表示していません。"}
+    mn:{type:"Төрөл",grammarSource:"Одоо байгаа хичээлийн дүрмийн агуулга",jaToMn:"Япон → Монгол",mnToJa:"Монгол → Япон",reading:"Уншлага",sentence:"Өгүүлбэр",kanjiToWord:"Ханз → холбоотой үг",grammarMeaning:"Дүрэм → утга",exampleGrammar:"Жишээ → дүрэм",all:"Бүгд",vocabulary:"Үг",kanji:"Ханз",grammar:"Дүрэм",study:"Өнөөдөр сурах",practice:"Тест",progress:"Ахиц",mistakes:"Миний алдаа",search:"Үг, ханз, дүрэм, жишээгээр хайх…",saved:"Хадгалсан",favorite:"Хадгалах",known:"Мэднэ",retry:"Дахин сурах",start:"Эхлэх",next:"Дараагийн",finish:"Дуусгах",correct:"Зөв",incorrect:"Буруу",details:"Дэлгэрэнгүй",status:"Төлөв",level:"Түвшин",today:"Өнөөдөр",review:"Давталт",due:"Давтах ёстой",empty:"Мэдээлэл олдсонгүй.",noProgress:"Одоогоор суралцсан мэдээлэл алга.",noReviews:"Өнөөдөр давтах зүйл алга.",noMistakes:"Одоогоор алдаа бүртгэгдээгүй.",accuracy:"Нарийвчлал",questions:"Асуулт",studyTime:"Суралцсан хугацаа",days:"Суралцсан өдөр",related:"Холбоотой үгс",example:"Жишээ өгүүлбэр",noExample:"Жишээ өгүүлбэр одоогоор байхгүй.",mistakeReview:"Алдаагаа давтах",retryQuiz:"Дахин тест хийх",dashboard:"Дашбоард руу",quizSetup:"Тест эхлүүлэх",questionCount:"Асуултын тоо",mode:"Горим",mistakeOnly:"Зөвхөн алдаа",mixed:"Холимог",searchResults:"Хайлтын үр дүн",planTitle:"Өнөөдөр сурах",planSub:"Өдрийн зорилго, давтах зүйл, боломжтой материалаас автоматаар тооцоолно.",newWords:"Шинэ үг",newKanji:"Шинэ ханз",newGrammar:"Шинэ дүрэм",startPlan:"Өнөөдрийн хичээл эхлүүлэх",mastered:"Эзэмшсэн",learning:"Суралцаж байна",familiar:"Танил",weak:"Сул",new:"Шинэ",derivedKanji:"Тусгай ханзны dataset байхгүй тул одоогийн бодит үгийн сан дахь ханзаас үүсгэв.",unsupported:"Энэ талбар одоогийн dataset-д байхгүй."},
+    en:{type:"Type",grammarSource:"Existing lesson grammar content",jaToMn:"Japanese → Mongolian",mnToJa:"Mongolian → Japanese",reading:"Reading",sentence:"Sentence",kanjiToWord:"Kanji → related word",grammarMeaning:"Grammar → meaning",exampleGrammar:"Example → grammar",all:"All",vocabulary:"Vocabulary",kanji:"Kanji",grammar:"Grammar",study:"Today",practice:"Quiz",progress:"Progress",mistakes:"Mistakes",search:"Search vocabulary, kanji, grammar, examples…",saved:"Saved",favorite:"Save",known:"Know",retry:"Learn again",start:"Start",next:"Next",finish:"Finish",correct:"Correct",incorrect:"Incorrect",details:"Details",status:"Status",level:"Level",today:"Today",review:"Review",due:"Due",empty:"No data found.",noProgress:"No learning progress yet.",noReviews:"Nothing is due for review today.",noMistakes:"No mistakes have been recorded yet.",accuracy:"Accuracy",questions:"Questions",studyTime:"Study time",days:"Study days",related:"Related words",example:"Example",noExample:"No example sentence is available.",mistakeReview:"Review mistakes",retryQuiz:"Retry quiz",dashboard:"Dashboard",quizSetup:"Start quiz",questionCount:"Question count",mode:"Mode",mistakeOnly:"Mistakes only",mixed:"Mixed",searchResults:"Search results",planTitle:"Study today",planSub:"Calculated from your daily goal, due reviews, and available content.",newWords:"New vocabulary",newKanji:"New kanji",newGrammar:"New grammar",startPlan:"Start today’s study",mastered:"Mastered",learning:"Learning",familiar:"Familiar",weak:"Weak",new:"New",derivedKanji:"No standalone kanji dataset exists, so this module is derived from actual kanji in the current vocabulary.",unsupported:"This field is not present in the current dataset."},
+    ja:{type:"種類",grammarSource:"既存レッスンの文法データ",jaToMn:"日本語 → モンゴル語",mnToJa:"モンゴル語 → 日本語",reading:"読み方",sentence:"例文",kanjiToWord:"漢字 → 関連語",grammarMeaning:"文法 → 意味",exampleGrammar:"例文 → 文法",all:"すべて",vocabulary:"語彙",kanji:"漢字",grammar:"文法",study:"今日の学習",practice:"クイズ",progress:"進捗",mistakes:"間違い",search:"語彙・漢字・文法・例文を検索…",saved:"保存済み",favorite:"保存",known:"知っている",retry:"もう一度学ぶ",start:"開始",next:"次へ",finish:"終了",correct:"正解",incorrect:"不正解",details:"詳細",status:"状態",level:"レベル",today:"今日",review:"復習",due:"復習対象",empty:"データがありません。",noProgress:"学習履歴はまだありません。",noReviews:"今日の復習はありません。",noMistakes:"まだ間違いはありません。",accuracy:"正答率",questions:"問題",studyTime:"学習時間",days:"学習日数",related:"関連語",example:"例文",noExample:"例文はありません。",mistakeReview:"間違いを復習",retryQuiz:"もう一度テスト",dashboard:"ダッシュボード",quizSetup:"テストを開始",questionCount:"問題数",mode:"モード",mistakeOnly:"間違いのみ",mixed:"ミックス",searchResults:"検索結果",planTitle:"今日の学習",planSub:"目標時間・復習・利用可能な教材から自動計算します。",newWords:"新しい語彙",newKanji:"新しい漢字",newGrammar:"新しい文法",startPlan:"今日の学習を開始",mastered:"マスター",learning:"学習中",familiar:"習得中",weak:"弱点",new:"新規",derivedKanji:"独立した漢字データセットがないため、現在の語彙に含まれる実際の漢字から表示しています。",unsupported:"現在のデータセットにこの項目がないため表示していません。"}
   };
   var t=function(k){return (DI[language]&&DI[language][k])||DI.mn[k]||k};
   var statusText=function(s){var m={NEW:"new",LEARNING:"learning",FAMILIAR:"familiar",WEAK:"weak",MASTERED:"mastered"};return t(m[s]||"new")};
@@ -21,18 +21,40 @@
       home.insertAdjacentHTML("beforeend",
         "<section class='wrap p2-section' id='study-hub'><div class='p2-heading'><div><div class='eyebrow'>"+esc(t("today"))+"</div><h2>"+esc(t("planTitle"))+"</h2><p>"+esc(t("planSub"))+"</p></div><button class='btn primary' id='p2-start-plan'>"+esc(t("startPlan"))+" →</button></div><div id='study-summary' class='study-summary'></div><div id='study-plan' class='study-plan'></div></section>"+
         "<section class='wrap p2-section' id='kanji'><div class='p2-heading'><div><div class='eyebrow'>漢</div><h2>"+esc(t("kanji"))+"</h2><p id='kanji-source-note'></p></div></div><div id='kanji-toolbar' class='module-toolbar'></div><div id='kanji-list' class='learning-grid'></div></section>"+
-        "<section class='wrap p2-section' id='grammar'><div class='p2-heading'><div><div class='eyebrow'>文法</div><h2>"+esc(t("grammar"))+"</h2><p>Existing lesson grammar content</p></div></div><div id='grammar-toolbar' class='module-toolbar'></div><div id='grammar-list' class='learning-grid'></div></section>"+
+        "<section class='wrap p2-section' id='grammar'><div class='p2-heading'><div><div class='eyebrow'>文法</div><h2>"+esc(t("grammar"))+"</h2><p>"+esc(t("grammarSource"))+"</p></div></div><div id='grammar-toolbar' class='module-toolbar'></div><div id='grammar-list' class='learning-grid'></div></section>"+
         "<section class='wrap p2-section' id='mistakes'><div class='p2-heading'><div><div class='eyebrow'>REVIEW</div><h2>"+esc(t("mistakes"))+"</h2><p>"+esc(t("noMistakes"))+"</p></div><button class='btn primary' id='p2-review-mistakes'>"+esc(t("mistakeReview"))+" →</button></div><div id='mistake-list' class='mistake-list'></div></section>"+
         "<section class='wrap p2-section' id='progress'><div class='p2-heading'><div><div class='eyebrow'>PROGRESS</div><h2>"+esc(t("progress"))+"</h2><p>"+esc(t("noProgress"))+"</p></div></div><div id='progress-overall' class='progress-overall'></div><div id='progress-modules' class='progress-module-grid'></div><div id='progress-jlpt' class='jlpt-progress'></div></section>"
       );
     }
+    var routes=[
+      ["dashboard","⌂",language==="ja"?"ホーム":language==="en"?"Home":"Нүүр"],
+      ["study-hub","▶",t("study")],["learn","学",language==="ja"?"学ぶ":language==="en"?"Learn":"Сурах"],
+      ["vocabulary","語",t("vocabulary")],["kanji","漢",t("kanji")],["grammar","文",t("grammar")],
+      ["practice","✓",t("practice")],["mistakes","⚠",t("mistakes")],["progress","↗",t("progress")]
+    ];
     var nav=$(".sidebar-nav");
-    if(nav)nav.innerHTML=[
-      ["dashboard","⌂","Нүүр"],["study-hub","▶",t("study")],["learn","学","Сурах"],["vocabulary","語",t("vocabulary")],["kanji","漢",t("kanji")],["grammar","文",t("grammar")],["practice","✓",t("practice")],["mistakes","⚠",t("mistakes")],["progress","↗",t("progress")]
-    ].map(function(x){return "<a href='#"+x[0]+"' data-nav='"+x[0]+"'><span>"+x[1]+"</span><span>"+esc(x[2])+"</span></a>"}).join("");
+    if(nav)nav.innerHTML=routes.map(function(x){return "<a href='#"+x[0]+"' data-nav='"+x[0]+"'><span>"+x[1]+"</span><span>"+esc(x[2])+"</span></a>"}).join("");
+    var desktop=$(".desktop-nav");
+    if(desktop)desktop.innerHTML=routes.slice(0,7).map(function(x){return "<a href='#"+x[0]+"' data-nav='"+x[0]+"'>"+esc(x[2])+"</a>"}).join("");
     var mobile=$(".mobile-nav");
-    if(mobile)mobile.innerHTML=[["dashboard","⌂","Нүүр"],["study-hub","▶","Өнөөдөр"],["vocabulary","語","Үг"],["practice","✓","Тест"],["progress","↗","Ахиц"]].map(function(x){return "<a href='#"+x[0]+"' data-nav='"+x[0]+"'><span>"+x[1]+"</span><i>"+x[2]+"</i></a>"}).join("");
-    document.querySelectorAll("[data-nav]").forEach(function(a){a.onclick=function(){document.querySelectorAll("[data-nav]").forEach(function(x){x.classList.remove("is-active")});a.classList.add("is-active")}});
+    if(mobile)mobile.innerHTML=[["dashboard","⌂",language==="ja"?"ホーム":language==="en"?"Home":"Нүүр"],["study-hub","▶",t("study")],["vocabulary","語",t("vocabulary")],["practice","✓",t("practice")],["progress","↗",t("progress")]].map(function(x){return "<a href='#"+x[0]+"' data-nav='"+x[0]+"'><span>"+x[1]+"</span><i>"+esc(x[2])+"</i></a>"}).join("");
+    document.querySelectorAll("[data-nav]").forEach(function(a){a.onclick=function(){syncNavigation()}});
+    syncNavigation();
+    bindNavObserver();
+  }
+  function syncNavigation(){
+    var current=(location.hash||"#dashboard").slice(1)||"dashboard";
+    document.querySelectorAll("[data-nav]").forEach(function(a){a.classList.toggle("is-active",a.getAttribute("href")==="#"+current)});
+  }
+  function bindNavObserver(){
+    if(window.__nihongoNavObserver)window.__nihongoNavObserver.disconnect();
+    if(!("IntersectionObserver" in window))return;
+    var sections=Array.prototype.map.call(document.querySelectorAll("[data-nav]"),function(a){return document.getElementById(a.getAttribute("href").slice(1))}).filter(Boolean);
+    window.__nihongoNavObserver=new IntersectionObserver(function(entries){
+      var visible=entries.filter(function(e){return e.isIntersecting}).sort(function(a,b){return b.intersectionRatio-a.intersectionRatio})[0];
+      if(visible){history.replaceState(null,"","#"+visible.target.id);syncNavigation();}
+    },{rootMargin:"-20% 0px -65% 0px",threshold:[0,.15,.35]});
+    sections.forEach(function(s){window.__nihongoNavObserver.observe(s)});
   }
 
   function renderVocabulary(){
@@ -125,7 +147,15 @@
     overlay.querySelector("#p2-g-known").onclick=function(){LearningStore.recordAnswer("grammar",id,{correct:true,selectedAnswer:g.pattern,correctAnswer:g.pattern,source:"self"});overlay.remove();setupGrammar();renderProgress()};
   }
 
-  function reviewDate(ts){if(!ts)return "—";var d=new Date(ts),diff=d-Date.now();if(diff<=0)return t("today");var n=Math.ceil(diff/86400000);return language==="ja"?n+"日後":language==="en"?"in "+n+"d":n+" хоногийн дараа"}
+  function reviewDate(ts){
+    if(!Number.isFinite(Number(ts)))return "—";
+    var d=new Date(Number(ts));if(Number.isNaN(d.getTime()))return "—";
+    var today=(window.NihongoDate&&window.NihongoDate.localDayKey)?window.NihongoDate.localDayKey(new Date()):new Date().toLocaleDateString("sv-SE");
+    var target=(window.NihongoDate&&window.NihongoDate.localDayKey)?window.NihongoDate.localDayKey(d):d.toLocaleDateString("sv-SE");
+    if(target===today)return t("today");
+    var days=Math.round((d.getTime()-Date.now())/86400000);
+    return language==="ja"?((days>=0?days:0)+"日後"):language==="en"?("in "+Math.max(0,days)+"d"):(Math.max(0,days)+" хоногийн дараа");
+  }
   function speak(txt){if("speechSynthesis"in window){speechSynthesis.cancel();var u=new SpeechSynthesisUtterance(txt);u.lang="ja-JP";speechSynthesis.speak(u)}}
 
   function buildPlan(){
@@ -141,14 +171,14 @@
     ]};
   }
   function renderStudy(){
-    var p=buildPlan(),s=LearningStore.load(),key=new Date().toISOString().slice(0,10),mins=s.studySessions.filter(function(x){return x.day===key}).reduce(function(a,x){return a+Number(x.duration||0)},0)/60;
+    var p=buildPlan(),s=LearningStore.load(),key=(window.NihongoDate&&window.NihongoDate.localDayKey)?window.NihongoDate.localDayKey(new Date()):new Date().toLocaleDateString("sv-SE"),mins=s.studySessions.filter(function(x){return x.day===key}).reduce(function(a,x){return a+Number(x.duration||0)},0)/60;
     $("#study-summary").innerHTML="<div class='study-metric'><b>"+Math.floor(mins)+"</b><span>/ "+p.goal+" мин</span><small>"+esc(t("studyTime"))+"</small></div><div class='study-metric'><b>"+p.due.length+"</b><span>"+esc(t("due"))+"</span><small>"+esc(t("review"))+"</small></div><div class='study-metric'><b>"+esc(p.level)+"</b><span>"+esc(t("level"))+"</span><small>"+esc(t("today"))+"</small></div>";
-    $("#study-plan").innerHTML=p.tasks.map(function(x){var icon=x.id==="review"?"↻":x.id==="vocabulary"?"語":x.id==="kanji"?"漢":"文";return "<article class='study-task "+(!x.count?"is-empty":"")+"'><div class='task-icon'>"+icon+"</div><div><b>"+esc(x.label)+"</b><p>"+x.count+" · "+x.minutes+" мин</p></div><button class='mini-action' data-plan='"+x.id+"' "+(!x.count?"disabled":"")+">"+esc(t("start"))+" →</button></article>"}).join("");
+    $("#study-plan").innerHTML=p.tasks.map(function(x){var icon=x.id==="review"?"↻":x.id==="vocabulary"?"語":x.id==="kanji"?"漢":"文";var text=x.count?(x.count+" · "+x.minutes+" мин"):(x.id==="review"?t("noReviews"):t("empty"));return "<article class='study-task "+(!x.count?"is-empty":"")+"'><div class='task-icon'>"+icon+"</div><div><b>"+esc(x.label)+"</b><p>"+esc(text)+"</p></div><button class='mini-action' data-plan='"+x.id+"' "+(!x.count?"disabled":"")+">"+esc(t("start"))+" →</button></article>"}).join("");
     $("#study-plan").querySelectorAll("[data-plan]").forEach(function(b){b.onclick=function(){runPlan(p,b.dataset.plan)}});
-    $("#p2-start-plan").onclick=function(){var x=p.tasks.find(function(a){return a.count>0});if(x)runPlan(p,x.id);else alert(t("noReviews"))};
+    $("#p2-start-plan").onclick=function(){var x=p.tasks.find(function(a){return a.count>0});if(x)runPlan(p,x.id);else alert(t("empty"))};
   }
   function runPlan(p,id){
-    if(id==="review"){var due=p.due.slice(0,(p.tasks.find(function(x){return x.id==="review"})||{}).count||0);var qs=due.map(function(x){return QuizEngine.buildQuestion(x.type,x.item,"mixed",LearningData.get(x.type))});if(qs.length)startQuizQuestions(qs,"review");else alert(t("noReviews"));return}
+    if(id==="review"){var due=p.due.slice(0,(p.tasks.find(function(x){return x.id==="review"})||{}).count||0);var qs=due.map(function(x){return QuizEngine.buildQuestion(x.type,x.item,"mixed",LearningData.get(x.type))}).filter(Boolean);if(qs.length)startQuizQuestions(qs,"review");else alert(t("noReviews"));return}
     var arr=(p.items[id]||[]).slice(0,(p.tasks.find(function(x){return x.id===id})||{}).count||0);if(arr.length)startQuiz({type:id,items:arr,count:arr.length,mode:"mixed"});
   }
 
@@ -162,10 +192,12 @@
   }
 
   function startQuiz(o){
-    var qs=QuizEngine.createQuiz(o);if(!qs.length){alert(t("empty"));return}
+    var qs=QuizEngine.createQuiz(o).filter(Boolean);if(!qs.length){alert(t("empty"));return}
     startQuizQuestions(qs,o.type);
   }
   function startQuizQuestions(qs,category){
+    qs=(Array.isArray(qs)?qs:[]).filter(function(q){return q&&Array.isArray(q.choices)&&q.choices.length>=2&&Number.isInteger(q.correct)&&q.correct>=0&&q.correct<q.choices.length&&q.correctValue!==""});
+    if(!qs.length){alert(t("empty"));return}
     var already=typeof phase1StartedAt!=="undefined"&&!!phase1StartedAt;
     LearningStore.startActivity(category==="review"?"quiz":category);
     quiz={questions:qs,index:0,correct:0,results:[],startedAt:Date.now(),autoTimer:!already,category:category};
@@ -181,6 +213,7 @@
   }
   function answerQuiz(i){
     var q=quiz.questions[quiz.index],buttons=[].slice.call(document.querySelectorAll(".quiz-choice")),fb=$("#p2-q-feedback");if(!q||buttons.some(function(b){return b.disabled}))return;
+    if(!Number.isInteger(i)||!buttons[i]||!buttons[q.correct])return;
     var ok=i===q.correct;buttons.forEach(function(b){b.disabled=true});buttons[i].classList.add(ok?"is-correct":"is-wrong");buttons[q.correct].classList.add("is-correct");
     LearningStore.recordAnswer(q.type,q.id,{correct:ok,selectedAnswer:q.choices[i],correctAnswer:q.correctValue,source:quiz.category==="review"?"review":"quiz"});
     quiz.results.push({id:q.id,type:q.type,correct:ok,selected:q.choices[i],expected:q.correctValue});if(ok)quiz.correct++;
@@ -225,14 +258,15 @@
 
   function refresh(){
     LearningStore.syncFromLegacy();mount();renderVocabulary();setupKanji();setupGrammar();renderMistakes();renderProgress();renderStudy();dashboardBridge();
-    document.querySelectorAll("[data-nav]").forEach(function(a){a.classList.remove("is-active")});
+    if(!quiz)setupQuiz();
+    syncNavigation();bindNavObserver();
   }
   var oldLocalize=localize;
   localize=function(){try{oldLocalize()}catch{}try{LearningStore.setSetting("language",language)}catch{}refresh()};
   window.Phase2UI={refresh:refresh,startQuiz:startQuiz};
   document.addEventListener("DOMContentLoaded",function(){
     LearningStore.load();mount();setupQuiz();refresh();
-    window.addEventListener("hashchange",function(){if(location.hash==="#practice"&&!quiz)setupQuiz()});
+    window.addEventListener("hashchange",function(){if(location.hash==="#practice"&&!quiz)setupQuiz();syncNavigation()});
     $("#setting-level")&&$("#setting-level").addEventListener("change",function(e){LearningStore.setSetting("level",e.target.value);if(typeof level!=="undefined")level=e.target.value;refresh()});
     $("#setting-goal")&&$("#setting-goal").addEventListener("change",function(e){LearningStore.setSetting("dailyGoal",e.target.value);refresh()});
   });
