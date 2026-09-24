@@ -39,7 +39,7 @@ Configure these server-side environment variables in the deployment platform:
 - `AI_PROVIDER_URL` — an OpenAI-compatible chat endpoint URL.
 - `AI_MODEL` — provider model name.
 
-Without these variables, the AI UI remains available but reports that the secure endpoint is not configured. Vocabulary, Kanji, Grammar, QuizEngine, Review, Timer and offline core learning continue to work without AI.
+Without all three variables, the AI UI remains available but reports that the secure endpoint is not configured. Vocabulary, Kanji, Grammar, QuizEngine, Review, Timer and offline core learning continue to work without AI.
 
 The Phase 3 frontend sends only bounded learning context: target JLPT, study time, progress summaries, recent mistakes, due reviews, limited quiz history, limited study history and selected learning content. AI chat history is bounded to 50 messages in `nihongo-learning-state-v2`.
 
