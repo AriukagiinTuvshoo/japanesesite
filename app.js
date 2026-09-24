@@ -77,3 +77,97 @@ function renderLessons(){const host=$('#lesson-path'),lessons=level==='N5'?START
 function renderWords(){const term=$('#word-search').value.trim().toLocaleLowerCase(),filter=$('#word-level').value;const savedWords=storedList('nihongo-saved'),found=WORDS.filter(w=>(filter==='all'||w.level===filter)&&(!savedOnly||savedWords.includes(w.jp))&&[w.jp,w.reading,w.mn,w.en].some(s=>s.toLocaleLowerCase().includes(term)));$('#saved-only').textContent=savedOnly?tx('allWords')+' ✓':'♡ '+tx('savedOnly');$('#saved-only').setAttribute('aria-pressed',String(savedOnly));$('#word-count').textContent=found.length+' '+tx('countWords');$('#word-list').innerHTML=found.length?found.map(w=>`<article class="word-card"><div class="word-top"><span class="word-level ${w.level.toLowerCase()}">${w.level}</span><button class="icon-action audio-word" data-jp="${w.jp}" aria-label="${tx('play')}" title="${tx('play')}">🔊</button><button class="icon-action save-word" data-jp="${w.jp}" aria-label="${tx('bookmark')}" title="${tx('bookmark')}">♡</button></div><h3 lang="ja">${w.jp}</h3><div class="word-reading" lang="ja">${w.reading}</div><div class="meaning-row"><span>MN</span>${w.mn}</div><div class="meaning-row"><span>EN</span>${w.en}</div><div class="word-example" lang="ja">${w.example}<small lang="${language==='en'?'en':'mn'}">${language==='en'?w.exEn:language==='ja'?w.exMn+' / '+w.exEn:w.exMn+' · '+w.exEn}</small></div></article>`).join(''):`<div class="empty-words">${savedOnly?tx('savedEmpty'):tx('searchEmpty')}</div>`;const saved=savedWords;document.querySelectorAll('.save-word').forEach(b=>{if(saved.includes(b.dataset.jp)){b.textContent='♥';b.classList.add('saved')}b.onclick=()=>{const curr=storedList('nihongo-saved');const next=curr.includes(b.dataset.jp)?curr.filter(x=>x!==b.dataset.jp):[...curr,b.dataset.jp];localStorage.setItem('nihongo-saved',JSON.stringify(next));renderWords()}});document.querySelectorAll('.audio-word').forEach(b=>b.onclick=()=>{if('speechSynthesis'in window){speechSynthesis.cancel();const voice=new SpeechSynthesisUtterance(b.dataset.jp);voice.lang='ja-JP';speechSynthesis.speak(voice)}})}
 function drawQuestion(){const q=QUIZ[qi];answered=false;$('#q-count').textContent=`${qi+1} ${tx('of')} ${QUIZ.length}`;$('#quiz-progress').style.width=`${(qi+1)/QUIZ.length*100}%`;$('#question').setAttribute('lang',language==='ja'?'ja':'mn');$('#question').textContent=language==='mn'?q.q:language==='en'?q.en:q.ja;$('#feedback').textContent='';$('#next-question').disabled=true;$('#next-question').innerHTML=`${qi===QUIZ.length-1?tx('restart'):tx('next')} <span>→</span>`;$('#answers').innerHTML=q.a[language].map((a,i)=>`<button class="answer" data-i="${i}">${String.fromCharCode(65+i)}　${a}</button>`).join('');document.querySelectorAll('.answer').forEach(b=>b.onclick=()=>{if(answered)return;answered=true;const i=Number(b.dataset.i),right=i===q.ok;if(right)quizCorrect++;b.classList.add(right?'correct':'wrong');document.querySelectorAll('.answer')[q.ok].classList.add('correct');$('#feedback').textContent=(right?tx('correct'):tx('incorrect'))+' '+tx('explanation')+': '+q.why[language]+(qi===QUIZ.length-1?' · '+tx('scoreLabel')+' '+quizCorrect+'/'+QUIZ.length:'');$('#next-question').disabled=false})}
 $('#language-picker').onchange=e=>{language=e.target.value;try{localStorage.setItem('nihongo-language',language)}catch{}localize()};$('#word-search').oninput=renderWords;$('#word-level').onchange=renderWords;$('#saved-only').onclick=()=>{savedOnly=!savedOnly;renderWords()};$('#next-question').onclick=()=>{if(qi===QUIZ.length-1){qi=0;quizCorrect=0}else qi++;drawQuestion()};$('#plan-btn').onclick=()=>{const today=new Date().toLocaleDateString('en-CA'),last=stored('nihongo-last-study','');if(last!==today){const yesterday=new Date(Date.now()-86400000).toLocaleDateString('en-CA'),old=Number(stored('nihongo-streak','0'));try{localStorage.setItem('nihongo-streak',String(last===yesterday?old+1:1));localStorage.setItem('nihongo-last-study',today)}catch{}}updateStreak();$('#vocabulary').scrollIntoView({behavior:'smooth'})};$('#streak').onclick=()=>$('#plan').scrollIntoView({behavior:'smooth'});function updateStreak(){$('#streak-count').textContent=stored('nihongo-streak','0');$('#q-level').textContent=`N5 · ${tx('dailyLabel')}`}localize();updateStreak();
+
+/* === Phase 1 dashboard / local progress foundation === */
+const PHASE1 = {
+  goalKey: 'nihongo-daily-goal',
+  sessionsKey: 'nihongo-study-sessions',
+  quizBestKey: 'nihongo-quiz-best',
+  getSessions(){
+    try { const value=JSON.parse(localStorage.getItem(this.sessionsKey)||'[]'); return Array.isArray(value)?value:[]; } catch { return []; }
+  },
+  saveSessions(items){ try{ localStorage.setItem(this.sessionsKey,JSON.stringify(items.slice(-200))); }catch{} },
+  todayKey(){ return new Date().toISOString().slice(0,10); },
+  dayMinutes(day){ return this.getSessions().filter(s=>s.day===day).reduce((sum,s)=>sum+Number(s.duration||0),0)/60; },
+  daysStudied(){ return new Set(this.getSessions().filter(s=>Number(s.duration||0)>0).map(s=>s.day)).size; }
+};
+let phase1Timer=null, phase1StartedAt=null;
+
+function phase1Lessons(){
+  const list = level==='N5' ? STARTER_LESSONS : MORE_LESSONS[level];
+  return Array.isArray(list)?list:[];
+}
+function renderDashboard(){
+  const goal=Math.max(1,Number(stored(PHASE1.goalKey,'20'))||20);
+  const today=PHASE1.todayKey(), minutes=PHASE1.dayMinutes(today), pct=Math.min(100,Math.round(minutes/goal*100));
+  const done=storedList('nihongo-done').filter(id=>id.startsWith(level+'-')).length;
+  const lessonTotal=phase1Lessons().length;
+  const saved=storedList('nihongo-saved');
+  const best=stored(PHASE1.quizBestKey,'');
+  const streak=stored('nihongo-streak','0');
+  $('#daily-goal-value')&&($('#daily-goal-value').textContent=goal);
+  $('#goal-minutes')&&($('#goal-minutes').textContent=Math.floor(minutes));
+  $('#goal-percent')&&($('#goal-percent').textContent=pct+'%');
+  $('#goal-bar-fill')&&($('#goal-bar-fill').style.width=pct+'%');
+  $('#dashboard-streak')&&($('#dashboard-streak').textContent=streak);
+  $('#sidebar-level')&&($('#sidebar-level').textContent='JLPT '+level);
+  $('#current-level-pill')&&($('#current-level-pill').textContent=level);
+  $('#metric-lessons')&&($('#metric-lessons').textContent=done+'/'+lessonTotal);
+  $('#metric-saved')&&($('#metric-saved').textContent=saved.length);
+  $('#metric-quiz')&&($('#metric-quiz').textContent=best?best+'%':'—');
+  $('#metric-study-days')&&($('#metric-study-days').textContent=PHASE1.daysStudied());
+  $('#quick-words')&&($('#quick-words').textContent=WORDS.length+' үг дотор');
+  const lastDone=done?storedList('nihongo-done').filter(id=>id.startsWith(level+'-')).slice(-1)[0]:'';
+  $('#continue-status')&&($('#continue-status').textContent=done?'Ахицтай':'Эхлээгүй');
+  $('#continue-title')&&($('#continue-title').textContent=done?level+' шатны хичээл үргэлжилж байна.':'Анхны хичээлээ эхлүүлээрэй.');
+  $('#continue-meta')&&($('#continue-meta').textContent=done?done+' / '+lessonTotal+' хичээл дууссан.':'Түвшнээ сонгоод хичээлээ тэмдэглээрэй.');
+  const dateEl=$('#dashboard-date'); if(dateEl) dateEl.textContent=new Intl.DateTimeFormat('mn-MN',{year:'numeric',month:'long',day:'numeric'}).format(new Date());
+  const chart=$('#activity-chart'), labels=$('#activity-labels');
+  if(chart&&labels){
+    const days=[], todayDate=new Date();
+    for(let i=6;i>=0;i--){const d=new Date(todayDate);d.setDate(todayDate.getDate()-i);days.push(d);}
+    const vals=days.map(d=>PHASE1.dayMinutes(d.toISOString().slice(0,10)));
+    const max=Math.max(1,...vals);
+    chart.innerHTML=vals.map(v=>'<div class="activity-bar '+(v===0?'zero':'')+'" style="height:'+Math.max(v===0?5:10,Math.round(v/max*82))+'px" title="'+Math.floor(v)+' мин"></div>').join('');
+    labels.innerHTML=days.map(d=>'<span>'+new Intl.DateTimeFormat('en-US',{weekday:'narrow'}).format(d)+'</span>').join('');
+    $('#activity-total')&&($('#activity-total').textContent=Math.floor(vals.reduce((a,b)=>a+b,0))+' мин');
+  }
+  const settingLevel=$('#setting-level'), settingGoal=$('#setting-goal');
+  if(settingLevel) settingLevel.value=level;
+  if(settingGoal) settingGoal.value=String(goal);
+}
+function updatePhase1Timer(){
+  if(!phase1StartedAt){ $('#session-timer')&&($('#session-timer').textContent='00:00'); return; }
+  const elapsed=Math.max(0,Date.now()-phase1StartedAt), sec=Math.floor(elapsed/1000), mm=String(Math.floor(sec/60)).padStart(2,'0'), ss=String(sec%60).padStart(2,'0');
+  $('#session-timer')&&($('#session-timer').textContent=mm+':'+ss);
+}
+function startPhase1Session(){
+  if(phase1StartedAt){
+    const duration=Math.floor((Date.now()-phase1StartedAt)/1000);
+    if(duration>=5){
+      const sessions=PHASE1.getSessions();
+      sessions.push({day:PHASE1.todayKey(),startedAt:new Date(phase1StartedAt).toISOString(),endedAt:new Date().toISOString(),duration});
+      PHASE1.saveSessions(sessions);
+    }
+    phase1StartedAt=null; if(phase1Timer) clearInterval(phase1Timer); phase1Timer=null;
+    $('#study-session-btn')&&($('#study-session-btn').textContent='Суралцах эхлүүлэх');
+  }else{
+    phase1StartedAt=Date.now(); phase1Timer=setInterval(updatePhase1Timer,1000);
+    $('#study-session-btn')&&($('#study-session-btn').textContent='Сургалтаа дуусгах');
+    try{const today=PHASE1.todayKey(),last=stored('nihongo-last-study',''); if(last!==today){const yesterday=new Date(Date.now()-86400000).toISOString().slice(0,10),old=Number(stored('nihongo-streak','0')); localStorage.setItem('nihongo-streak',String(last===yesterday?old+1:1)); localStorage.setItem('nihongo-last-study',today);}}catch{}
+  }
+  updatePhase1Timer(); updateStreak(); renderDashboard();
+}
+function bindPhase1UI(){
+  $('#study-session-btn')?.addEventListener('click',startPhase1Session);
+  $('#setting-level')?.addEventListener('change',e=>{level=e.target.value;try{localStorage.setItem('nihongo-level',level)}catch{}renderLevels();renderDashboard();});
+  $('#setting-goal')?.addEventListener('change',e=>{try{localStorage.setItem(PHASE1.goalKey,e.target.value)}catch{}renderDashboard();});
+  document.querySelectorAll('[data-nav]').forEach(a=>a.addEventListener('click',()=>{document.querySelectorAll('[data-nav]').forEach(x=>x.classList.remove('is-active'));a.classList.add('is-active');}));
+  const targets=[...document.querySelectorAll('[data-nav]')];
+  const sections=targets.map(a=>document.getElementById(a.dataset.nav)).filter(Boolean);
+  const observer=new IntersectionObserver(entries=>{const visible=entries.filter(e=>e.isIntersecting).sort((a,b)=>b.intersectionRatio-a.intersectionRatio)[0];if(!visible)return;targets.forEach(a=>a.classList.toggle('is-active',a.dataset.nav===visible.target.id));},{rootMargin:'-20% 0px -65% 0px',threshold:[0,.15,.35]});
+  sections.forEach(s=>observer.observe(s));
+}
+const originalLocalize=localize;
+localize=function(){originalLocalize();renderDashboard();};
+document.addEventListener('DOMContentLoaded',()=>{bindPhase1UI();renderDashboard();});
