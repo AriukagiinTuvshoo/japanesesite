@@ -49,3 +49,12 @@
 }
 @media(max-width:430px){.ai-chip{min-width:100%;}.ai-input-row{align-items:stretch;flex-direction:column}.ai-input-row .btn{width:100%}.ai-bubble{max-width:94%;overflow-wrap:anywhere}}
 @media(prefers-reduced-motion:reduce){.ai-bubble,.ai-chip,.ai-action-card{transition:none!important}}
+
+/* v7 AI workspace polish: preserve the existing AI/data boundary. */
+.ai-shell{background:var(--color-surface,#fff);border-color:var(--color-border,var(--shell-line));box-shadow:var(--shadow-md,0 12px 35px rgba(23,36,31,.08));}
+.ai-heading{border-bottom-color:var(--color-border,var(--shell-line));}
+.ai-messages{background:var(--color-surface-muted,#f8faf7);}
+.ai-input-row textarea{font-family:var(--font-ui,var(--ui));}
+.ai-chip,.ai-action-card,.ai-plan-card{transition:background var(--motion-fast,.14s) var(--ease-standard,ease),border-color var(--motion-fast,.14s) var(--ease-standard,ease),box-shadow var(--motion-fast,.14s) var(--ease-standard,ease);}
+.ai-chip:focus-visible,.ai-action-card:focus-visible{outline:3px solid color-mix(in srgb,var(--color-primary,#176c4c) 28%,transparent);outline-offset:2px;}
+@media(max-width:430px){.ai-shell{border-radius:12px}.ai-heading h2{font-size:25px}.ai-messages{min-height:280px}.ai-input-row textarea{min-height:52px;font-size:13px}.ai-input-row .btn{min-height:48px}.ai-chip{min-height:46px;}}

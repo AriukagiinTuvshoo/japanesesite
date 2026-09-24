@@ -11,7 +11,8 @@
 
 /* === Phase 1 professional platform shell === */
 :root{
-  --shell-sidebar:244px;
+  --shell-sidebar-size:244px;
+  --shell-sidebar:var(--shell-sidebar-size);
   --shell-line:#e3e9e4;
   --shell-soft:#f0f4ef;
   --shell-red:#b94343;
