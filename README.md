@@ -26,12 +26,12 @@ python3 -m http.server 8000
 
 ## Deployment
 
-The static site is deployed from the `main` branch to Render and redeploys automatically on commits.
+The frontend is a static PWA and can be served from a static host. The `/api/ai` endpoint requires a deployment target that supports serverless functions under `api/`.
 
 
 ## Phase 3 — AI先生
 
-The frontend remains a static PWA. AI requests go through the same-origin `/api/ai` serverless boundary when deployed on a platform that supports the `api/` directory (for example, Vercel-style serverless functions).
+The frontend remains a static PWA. AI requests go through the same-origin `/api/ai` serverless boundary when deployed on a platform that supports the `api/` directory (for example, a Vercel-style serverless function).
 
 Configure these server-side environment variables in the deployment platform:
 
@@ -43,4 +43,11 @@ Without these variables, the AI UI remains available but reports that the secure
 
 The Phase 3 frontend sends only bounded learning context: target JLPT, study time, progress summaries, recent mistakes, due reviews, limited quiz history, limited study history and selected learning content. AI chat history is bounded to 50 messages in `nihongo-learning-state-v2`.
 
-A local mock provider is included for development/runtime validation only. It is not presented as production AI and is not enabled automatically.
+Local development with `python3 -m http.server 8000` exercises the frontend only; it does not provide the secure `/api/ai` server function. A local mock provider is included for development/runtime validation only. It is never enabled automatically and must not be presented as production AI.
+
+
+## Phase 3.5 — Production QA
+
+Phase 3.5 adds a repository QA harness under `qa/` and a GitHub Actions workflow under `.github/workflows/`. The checks cover state regression, AI request limits, action validation, provider error normalization, unsafe execution scans, manifest parsing and local asset references.
+
+Production AI configuration remains server-side only via `AI_API_KEY`, `AI_PROVIDER_URL` and `AI_MODEL`; no secret values belong in this repository. The current environment could not complete real browser click-through testing, so browser E2E must be verified on an accessible deployed build before release.

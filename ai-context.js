@@ -24,7 +24,7 @@
   function summarizeItem(type,item){
     if(!item)return null;
     if(type==='vocabulary')return {contentType:type,contentId:item.id,japanese:item.jp,reading:item.reading||'',meaningMn:item.mn||'',meaningEn:item.en||'',level:item.level};
-    if(type==='kanji')return {contentType:type,contentId:item.id,character:item.char,level:item.level,relatedWords:(item.related||[]).slice(0,3).map(function(w){return {japanese:w.jp,reading:w.reading||'',meaningMn:w.mn||'',meaningEn:w.en||''};})};
+    if(type==='kanji')return {contentType:type,contentId:item.id,character:item.char,level:item.level,source:item.source||'derived-from-vocabulary',relatedWords:(item.related||[]).slice(0,3).map(function(w){return {japanese:w.jp,reading:w.reading||'',meaningMn:w.mn||'',meaningEn:w.en||''};})};
     return {contentType:type,contentId:item.id,pattern:item.pattern||'',titleMn:item.titleMn||'',titleEn:item.titleEn||'',titleJa:item.titleJa||'',level:item.level,example:item.example||''};
   }
   function weakItems(type,state,limit){
