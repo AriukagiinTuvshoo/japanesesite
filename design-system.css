@@ -70,6 +70,8 @@
   --content-max:1180px;
   --content-reading:760px;
   --sidebar-width:248px;
+  --shell-sidebar:var(--sidebar-width);
+  --shell-line:var(--border);
   --header-height:72px;
 
   /* Interaction */
@@ -124,6 +126,8 @@ button:disabled,[aria-disabled="true"]{cursor:not-allowed}
 :where(input,select,textarea)::placeholder{color:var(--text-muted)}
 
 /* Foundation layout primitives */
+.skip-link{position:fixed;left:12px;top:-80px;z-index:120;padding:10px 14px;border-radius:var(--radius-sm);background:var(--accent);color:#fff;font-size:var(--text-body-sm);font-weight:750;box-shadow:var(--elevation-raised)}
+.skip-link:focus{top:12px}
 .ds-page{min-height:100vh;background:var(--canvas)}
 .ds-container{width:min(var(--content-max),calc(100% - 48px));margin-inline:auto}
 .ds-reading{width:min(var(--content-reading),100%);margin-inline:auto}
