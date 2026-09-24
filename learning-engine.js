@@ -331,7 +331,8 @@
           return {id:item.id,type,mode:m,prompt:item.jp,subprompt:'読み方',choices:opts,correct:opts.indexOf(item.reading),correctValue:item.reading,item};
         }
         const opts=shuffle([item.jp,...distractors(source.map(x=>x.jp),item.jp)]).slice(0,4);
-        return {id:item.id,type,mode:m,prompt:item.example||item.jp,subprompt:'この文と関係がある単語は？',choices:opts,correct:opts.indexOf(item.jp),correctValue:item.jp,item};
+        const exact=item.example&&item.example.includes(item.jp);
+        return {id:item.id,type,mode:m,prompt:exact?item.example.replace(item.jp,'＿＿＿'):(item.example||item.jp),subprompt:exact?'Хоосон зайд тохирох үгийг сонго':'Энэ өгүүлбэртэй холбоотой үгийг сонго',choices:opts,correct:opts.indexOf(item.jp),correctValue:item.jp,item};
       }
       if(type==='kanji'){
         const related=item.related||[];
