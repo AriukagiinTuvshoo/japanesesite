@@ -228,7 +228,7 @@
     document.querySelectorAll("[data-nav]").forEach(function(a){a.classList.remove("is-active")});
   }
   var oldLocalize=localize;
-  localize=function(){oldLocalize();try{LearningStore.setSetting("language",language)}catch{}refresh()};
+  localize=function(){try{oldLocalize()}catch{}try{LearningStore.setSetting("language",language)}catch{}refresh()};
   window.Phase2UI={refresh:refresh,startQuiz:startQuiz};
   document.addEventListener("DOMContentLoaded",function(){
     LearningStore.load();mount();setupQuiz();refresh();
