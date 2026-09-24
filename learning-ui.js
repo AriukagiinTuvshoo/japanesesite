@@ -252,7 +252,7 @@
   function dashboardBridge(){
     var grid=$(".dashboard-grid");if(!grid)return;var card=$("#p2-dashboard-learning");
     if(!card){card=document.createElement("article");card.id="p2-dashboard-learning";card.className="dash-card p2-dash-learning";grid.appendChild(card)}
-    var s=LearningStore.load(),due=LearningStore.due(),key=new Date().toISOString().slice(0,10),mins=s.studySessions.filter(function(x){return x.day===key}).reduce(function(a,x){return a+Number(x.duration||0)},0)/60;
+    var s=LearningStore.load(),due=LearningStore.due(),key=(window.NihongoDate&&window.NihongoDate.localDayKey)?window.NihongoDate.localDayKey(new Date()):new Date().toLocaleDateString("sv-SE"),mins=s.studySessions.filter(function(x){return x.day===key}).reduce(function(a,x){return a+Number(x.duration||0)},0)/60;
     card.innerHTML="<div class='dash-card-head'><span>"+esc(t("today"))+"</span><a href='#study-hub'>"+esc(t("study"))+" →</a></div><div class='p2-dash-row'><span>♻ "+due.length+" "+esc(t("due"))+"</span><span>⏱ "+Math.floor(mins)+" / "+s.settings.dailyGoal+" мин</span></div><div class='p2-dash-mods'>"+["vocabulary","kanji","grammar"].map(function(type){var d=LearningStore.stats(type),n=d.counts.FAMILIAR+d.counts.MASTERED;return "<span><b>"+n+"</b> / "+d.total+" "+esc(t(type))+"</span>"}).join("")+"</div>";
   }
 
