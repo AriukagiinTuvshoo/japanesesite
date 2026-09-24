@@ -22,7 +22,7 @@ module.exports=async function(req,res){
   let body=req.body;
   try{if(typeof body==='string')body=JSON.parse(body);}catch{return send(res,400,{code:'INVALID_JSON',message:'Invalid request JSON.'});}
   if(!body||typeof body!=='object')return send(res,400,{code:'INVALID_BODY',message:'Invalid request body.'});
-  const messages=Array.isArray(body.messages)?body.messages.filter(function(m){return m&&['user','assistant','system'].includes(m.role)&&typeof m.content==='string';}).slice(-MAX_MESSAGES):[];
+  const messages=Array.isArray(body.messages)?body.messages.filter(function(m){return m&&['user','assistant','system'].includes(m.role)&&typeof m.content==='string';}).slice(-MAX_MESSAGES).map(function(m){return {role:m.role,content:m.content.slice(0,4000)};}):[];
   const context=body.context&&typeof body.context==='object'?body.context:null;
   const userMessage=typeof body.userMessage==='string'?body.userMessage.slice(0,MAX_USER_CHARS):'';
   if(!userMessage&&!messages.some(function(m){return m.role==='user';}))return send(res,400,{code:'EMPTY_MESSAGE',message:'A user message is required.'});
