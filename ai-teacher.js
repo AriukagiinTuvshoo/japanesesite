@@ -77,6 +77,16 @@
      button.onclick=function(){if(window.Phase2UI&&Phase2UI.startQuiz){Phase2UI.startQuiz({type:action.contentType,items:items,mode:action.mode,count:action.questionCount,level:action.level||undefined});}};
      host.appendChild(button);host.scrollTop=host.scrollHeight;return;
    }
+   if(action.type==='REVIEW_MISTAKES'){
+     append('assistant',action.summary||t('weak'));
+     var reviewHost=document.querySelector('#ai-messages'),reviewBtn=document.createElement('button');reviewBtn.className='ai-action-card';reviewBtn.type='button';reviewBtn.textContent=t('startQuiz')+' · '+action.contentIds.length;
+     reviewBtn.onclick=function(){
+       var items=action.contentIds.map(function(id){var m=LearningStore.mistakes().find(function(x){return x.id===id});return m&&m.item;}).filter(Boolean);
+       var grouped={};items.forEach(function(item){var type=item.type;if(!grouped[type])grouped[type]=[];grouped[type].push(item);});
+       var first=Object.keys(grouped)[0];if(first&&window.Phase2UI&&Phase2UI.startQuiz)Phase2UI.startQuiz({type:first,items:grouped[first],mode:'mixed',count:grouped[first].length});
+     };
+     reviewHost.appendChild(reviewBtn);reviewHost.scrollTop=reviewHost.scrollHeight;return;
+   }
    if(action.type==='STUDY_PLAN'){
      LearningStore.setAILastPlan(action);append('assistant',fallbackText&&fallbackText.charAt(0)!=='{'?fallbackText:t('plan'));
      var host=document.querySelector('#ai-messages'),card=document.createElement('div');card.className='ai-plan-card';var title=document.createElement('b');title.textContent=t('plan');card.appendChild(title);
