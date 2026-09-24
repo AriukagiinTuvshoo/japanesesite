@@ -1,0 +1,7 @@
+html{font-size:16px}
+body{font-family:var(--font-ui);font-optical-sizing:auto;text-rendering:optimizeLegibility}
+h1,h2,h3,h4,h5,h6{color:var(--color-text);text-wrap:balance}
+p{max-width:72ch}
+:where(.jp,.jp-text,[lang="ja"]){font-family:var(--font-jp);font-feature-settings:"palt"}
+:where(ruby){ruby-position:over}
+:where(rt){font-size:.55em;line-height:1;letter-spacing:0}
