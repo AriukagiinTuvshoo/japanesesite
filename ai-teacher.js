@@ -59,8 +59,9 @@
    var payload={action:action||'CHAT',userMessage:text,context:context,messages:history().filter(function(m){return m.role!=='system'}).slice(-12),contentType:opts.contentType||null,questionCount:opts.questionCount||null,candidates:opts.candidates||[]};
    try{
      if(!navigator.onLine)throw Object.assign(new Error(t('offline')),{code:'OFFLINE'});
-     var result=await AIProvider.request(payload),parsed=AIActions.parseAndValidate(result.text);
+     var result=await AIProvider.request(payload),parsed=AIActions.parseAndValidate(result.text,{expectedContentType:opts.contentType||null,allowedIds:opts.candidates||[]});
      if(parsed.valid&&parsed.action){handleAction(parsed.action,result.text);}
+     else if(parsed.error==='content_not_in_candidate_set'||parsed.error==='wrong_content_type'){append('assistant',t('actionRejected'));}
      else if(parsed.error!=='no_structured_action'&&/^[{]/.test(result.text.trim())){append('assistant',t('actionRejected'));}
      else {append('assistant',result.text);}
    }catch(e){
