@@ -266,7 +266,7 @@
       storageSet('nihongo-streak',String(s.streak.count||0));
       if(s.streak.lastStudy)storageSet('nihongo-last-study',s.streak.lastStudy); else storageRemove('nihongo-last-study');
       storageSet('nihongo-study-sessions',JSON.stringify(s.studySessions.slice(-500)));
-      storageSet('nihongo-quiz-best',String(s.meta.quizBest||0));
+      storageSet('nihongo-quiz-best',s.meta.quizBest?String(s.meta.quizBest):'');
       if(saveState)storageSet(this.key,JSON.stringify(s));
       return s;
     },
