@@ -1,0 +1,51 @@
+/* Phase 3 AI先生 visual layer; follows Phase 1/2 tokens. */
+.ai-teacher-section{padding-top:38px;padding-bottom:80px}
+.ai-shell{background:#fff;border:1px solid var(--shell-line,var(--line));border-radius:16px;box-shadow:0 12px 35px #18382b08;overflow:hidden}
+.ai-heading{display:flex;justify-content:space-between;align-items:flex-end;gap:18px;padding:22px 22px 17px;border-bottom:1px solid #e8ede8}
+.ai-heading h2{margin:6px 0 3px;font-size:30px;letter-spacing:-1px}
+.ai-heading p{margin:0;color:#7e8a82;font-size:11px}
+.ai-header-actions{display:flex;align-items:center;gap:8px}
+.ai-status{display:inline-flex;align-items:center;gap:5px;padding:6px 8px;border-radius:999px;background:#f0f4ef;color:#617168;font-size:8px;font-weight:800}
+.ai-context-strip{display:flex;gap:7px;flex-wrap:wrap;padding:10px 22px;border-bottom:1px solid #edf1ed;background:#fafcf9}
+.ai-context-strip span{padding:6px 8px;border-radius:8px;background:#f0f4ef;color:#77827b;font-size:9px}
+.ai-context-strip b{color:#40564a}
+.ai-messages{height:440px;overflow:auto;padding:20px;background:linear-gradient(#fbfcfa,#f8faf7)}
+.ai-welcome{max-width:620px;margin:50px auto;padding:18px 20px;background:#fff;border:1px solid #e0e7e1;border-radius:14px;color:#627168;font-size:12px;line-height:1.7;box-shadow:0 7px 22px #18382b08}
+.ai-message{display:flex;margin:8px 0}.ai-message.user{justify-content:flex-end}.ai-message.assistant{justify-content:flex-start}
+.ai-bubble{max-width:min(78%,680px);padding:11px 14px;border-radius:14px;background:#fff;border:1px solid #e2e8e2;color:#415047;font-size:11px;line-height:1.7;white-space:pre-wrap;overflow-wrap:anywhere}
+.ai-message.user .ai-bubble{background:#eef5ef;border-color:#d8e5da;color:#355341}
+.ai-thinking{opacity:.75}
+.ai-quick{display:flex;gap:7px;flex-wrap:wrap;padding:12px 18px;border-top:1px solid #e8ede8;background:#fff}
+.ai-chip{min-height:42px;border:1px solid #dce5de;background:#fbfcfa;border-radius:10px;padding:8px 11px;color:#52635a;font-size:9px;font-weight:800;cursor:pointer}
+.ai-chip:hover{border-color:#a9c0ad;background:#f2f7f2}
+.ai-input-row{display:flex;gap:8px;padding:13px 18px;border-top:1px solid #e8ede8;background:#fff}
+.ai-input-row textarea{flex:1;resize:none;min-height:48px;max-height:150px;border:1px solid #dfe7e0;border-radius:11px;padding:11px 12px;color:#3e4e45;background:#fbfcfa;font:500 12px/1.55 var(--ui);outline:none}
+.ai-input-row textarea:focus{border-color:#8eaf96;box-shadow:0 0 0 3px #dceade}
+.ai-input-row .btn{align-self:stretch;min-width:88px}
+.ai-privacy{margin:0;padding:0 18px 14px;color:#98a29c;font-size:8px;line-height:1.5}
+.ai-action-card{display:block;margin-top:9px;border:1px solid #b8ccb9;background:#eef6ef;border-radius:10px;padding:10px 12px;color:#365241;font-size:10px;font-weight:800;cursor:pointer}
+.ai-action-card:hover{background:#e5f0e6}
+.ai-plan-card{margin-top:10px;padding:12px;border:1px solid #d9e5da;background:#fff;border-radius:12px}
+.ai-plan-card>b{font-size:10px;color:#4b5e53}
+.ai-plan-row{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:8px 0;border-top:1px solid #edf1ed;color:#627068;font-size:9px}
+.ai-plan-row:first-of-type{margin-top:8px}
+.ai-dashboard-card{grid-column:span 1}
+.ai-dashboard-card p{margin:10px 0;color:#88938c;font-size:9px;line-height:1.6}
+.ai-dashboard-card .mini-action{width:100%}
+@media(max-width:1000px){.ai-dashboard-card{grid-column:span 2}}
+@media(max-width:700px){
+  .ai-teacher-section{padding-top:24px;padding-bottom:88px}
+  .ai-heading{padding:17px 14px 14px;align-items:flex-start;flex-direction:column}
+  .ai-heading h2{font-size:26px}
+  .ai-header-actions{width:100%;justify-content:space-between}
+  .ai-context-strip{padding:9px 12px}
+  .ai-messages{height:55vh;min-height:330px;padding:12px}
+  .ai-bubble{max-width:88%;font-size:10px}
+  .ai-quick{padding:10px 12px}
+  .ai-chip{flex:1;min-width:120px}
+  .ai-input-row{padding:10px 12px}
+  .ai-input-row .btn{min-width:76px}
+  .ai-dashboard-card{grid-column:span 1}
+}
+@media(max-width:390px){.ai-chip{min-width:100%;}.ai-input-row{align-items:stretch;flex-direction:column}.ai-input-row .btn{width:100%}}
+@media(prefers-reduced-motion:reduce){.ai-bubble,.ai-chip,.ai-action-card{transition:none!important}}
