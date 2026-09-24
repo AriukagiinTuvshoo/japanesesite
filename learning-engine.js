@@ -97,6 +97,7 @@
 
   const emptyState=()=>({
     version:2,
+
     settings:{
       language:(typeof language!=='undefined'&&['mn','en','ja'].includes(language))?language:'mn',
       level:(typeof level!=='undefined'&&/^N[1-5]$/.test(level))?level:'N5',
@@ -109,7 +110,8 @@
     studySessions:[],
     meta:{quizBest:0},
     streak:{count:0,lastStudy:''},
-    legacy:{lessonDone:[]}
+    legacy:{lessonDone:[]},
+    ai:{preferences:{mode:'teacher'},recentChats:[],lastPlan:null,updatedAt:null}
   });
 
   function migrateLegacy(){
@@ -200,6 +202,15 @@
     out.meta={...base.meta,...(s.meta&&typeof s.meta==='object'?s.meta:{})};
     out.streak={...base.streak,...(s.streak&&typeof s.streak==='object'?s.streak:{})};
     out.legacy={...base.legacy,...(s.legacy&&typeof s.legacy==='object'?s.legacy:{})};
+    const ai=(s.ai&&typeof s.ai==='object')?s.ai:{};
+    out.ai={
+      ...base.ai,
+      ...ai,
+      preferences:{...base.ai.preferences,...(ai.preferences&&typeof ai.preferences==='object'?ai.preferences:{})},
+      recentChats:Array.isArray(ai.recentChats)?ai.recentChats.filter(x=>x&&['user','assistant','system'].includes(x.role)&&typeof x.content==='string').slice(-50).map(x=>({role:x.role,content:x.content.slice(0,6000),timestamp:Number(x.timestamp)||Date.now()})):[],
+      lastPlan:ai.lastPlan&&typeof ai.lastPlan==='object'?ai.lastPlan:null,
+      updatedAt:Number(ai.updatedAt)||null
+    };
     out.settings.dailyGoal=Math.max(1,Number(out.settings.dailyGoal)||20);
     out.settings.level=/^N[1-5]$/.test(out.settings.level)?out.settings.level:'N5';
     out.settings.language=['mn','en','ja'].includes(out.settings.language)?out.settings.language:'mn';
@@ -269,6 +280,23 @@
       storageSet('nihongo-quiz-best',s.meta.quizBest?String(s.meta.quizBest):'');
       if(saveState)storageSet(this.key,JSON.stringify(s));
       return s;
+    },
+    getAIState(){
+      const s=this.load();
+      return s.ai;
+    },
+    appendAIChat(message){
+      const s=this.load(),m=message&&typeof message==='object'?message:null;
+      if(!m||!['user','assistant','system'].includes(m.role)||typeof m.content!=='string')return false;
+      s.ai.recentChats.push({role:m.role,content:m.content.slice(0,6000),timestamp:Number(m.timestamp)||Date.now()});
+      s.ai.recentChats=s.ai.recentChats.slice(-50);
+      s.ai.updatedAt=Date.now();this.save();return true;
+    },
+    clearAIHistory(){
+      const s=this.load();s.ai.recentChats=[];s.ai.lastPlan=null;s.ai.updatedAt=Date.now();this.save();return true;
+    },
+    setAILastPlan(plan){
+      const s=this.load();s.ai.lastPlan=plan&&typeof plan==='object'?plan:null;s.ai.updatedAt=Date.now();this.save();return s.ai.lastPlan;
     },
     setSetting(key,value){
       const s=this.load();
