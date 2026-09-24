@@ -27,3 +27,20 @@ python3 -m http.server 8000
 ## Deployment
 
 The static site is deployed from the `main` branch to Render and redeploys automatically on commits.
+
+
+## Phase 3 — AI先生
+
+The frontend remains a static PWA. AI requests go through the same-origin `/api/ai` serverless boundary when deployed on a platform that supports the `api/` directory (for example, Vercel-style serverless functions).
+
+Configure these server-side environment variables in the deployment platform:
+
+- `AI_API_KEY` — provider secret; never put this in frontend code or localStorage.
+- `AI_PROVIDER_URL` — an OpenAI-compatible chat endpoint URL.
+- `AI_MODEL` — provider model name.
+
+Without these variables, the AI UI remains available but reports that the secure endpoint is not configured. Vocabulary, Kanji, Grammar, QuizEngine, Review, Timer and offline core learning continue to work without AI.
+
+The Phase 3 frontend sends only bounded learning context: target JLPT, study time, progress summaries, recent mistakes, due reviews, limited quiz history, limited study history and selected learning content. AI chat history is bounded to 50 messages in `nihongo-learning-state-v2`.
+
+A local mock provider is included for development/runtime validation only. It is not presented as production AI and is not enabled automatically.
