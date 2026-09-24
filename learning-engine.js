@@ -207,7 +207,7 @@
       ...base.ai,
       ...ai,
       preferences:{...base.ai.preferences,...(ai.preferences&&typeof ai.preferences==='object'?ai.preferences:{})},
-      recentChats:Array.isArray(ai.recentChats)?ai.recentChats.filter(x=>x&&['user','assistant','system'].includes(x.role)&&typeof x.content==='string').slice(-50).map(x=>({role:x.role,content:x.content.slice(0,6000),timestamp:Number(x.timestamp)||Date.now()})):[],
+      recentChats:Array.isArray(ai.recentChats)?ai.recentChats.filter(x=>x&&['user','assistant'].includes(x.role)&&typeof x.content==='string').slice(-50).map(x=>({role:x.role,content:x.content.slice(0,6000),timestamp:Number(x.timestamp)||Date.now()})):[],
       lastPlan:ai.lastPlan&&typeof ai.lastPlan==='object'?ai.lastPlan:null,
       updatedAt:Number(ai.updatedAt)||null
     };
@@ -287,7 +287,7 @@
     },
     appendAIChat(message){
       const s=this.load(),m=message&&typeof message==='object'?message:null;
-      if(!m||!['user','assistant','system'].includes(m.role)||typeof m.content!=='string')return false;
+      if(!m||!['user','assistant'].includes(m.role)||typeof m.content!=='string')return false;
       s.ai.recentChats.push({role:m.role,content:m.content.slice(0,6000),timestamp:Number(m.timestamp)||Date.now()});
       s.ai.recentChats=s.ai.recentChats.slice(-50);
       s.ai.updatedAt=Date.now();this.save();return true;
