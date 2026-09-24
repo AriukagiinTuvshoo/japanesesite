@@ -161,7 +161,10 @@
       out.progress[t]={...(legacy.progress[t]||{}),...(existing.progress&&existing.progress[t]||{})};
       out.favorites[t]=[...new Set([...(legacy.favorites[t]||[]),...(existing.favorites&&existing.favorites[t]||[])].map(id=>normalizeId(t,id)).filter(Boolean))];
     });
-    out.studySessions=[...(legacy.studySessions||[]),...(existing.studySessions||[])];
+    const mergedSessions=[...(legacy.studySessions||[]),...(existing.studySessions||[])];
+    const sessionMap=new Map();
+    mergedSessions.filter(x=>x&&x.startedAt).forEach(x=>sessionMap.set(x.startedAt+'|'+x.endedAt+'|'+x.duration,x));
+    out.studySessions=[...sessionMap.values()];
     out.legacy={...legacy.legacy,...(existing.legacy||{})};
     out.streak={...legacy.streak,...(existing.streak||{})};
     out.meta={...legacy.meta,...(existing.meta||{})};
@@ -186,7 +189,14 @@
       });
     }
     out.quizHistory=Array.isArray(s.quizHistory)?s.quizHistory.filter(x=>x&&typeof x==='object').slice(-100):[];
-    out.studySessions=Array.isArray(s.studySessions)?s.studySessions.filter(x=>x&&typeof x==='object'&&x.startedAt&&Number.isFinite(Number(x.duration))&&Number(x.duration)>=0).slice(-500):[];
+    const rawSessions=Array.isArray(s.studySessions)?s.studySessions.filter(x=>x&&typeof x==='object'&&x.startedAt&&Number.isFinite(Number(x.duration))&&Number(x.duration)>=0):[];
+    const sessionMap=new Map();
+    rawSessions.forEach(x=>{
+      const started=new Date(x.startedAt);const day=(typeof x.day==='string'&&/^\d{4}-\d{2}-\d{2}$/.test(x.day))?x.day:(Number.isNaN(started.getTime())?localDayKey(new Date()):localDayKey(started));
+      const normalized={...x,day,duration:Math.max(0,Math.floor(Number(x.duration)||0)),activity:['vocabulary','kanji','grammar','quiz','reading','listening','study'].includes(x.activity)?x.activity:'study'};
+      sessionMap.set(normalized.startedAt+'|'+normalized.endedAt+'|'+normalized.duration,normalized);
+    });
+    out.studySessions=[...sessionMap.values()].slice(-500);
     out.meta={...base.meta,...(s.meta&&typeof s.meta==='object'?s.meta:{})};
     out.streak={...base.streak,...(s.streak&&typeof s.streak==='object'?s.streak:{})};
     out.legacy={...base.legacy,...(s.legacy&&typeof s.legacy==='object'?s.legacy:{})};
