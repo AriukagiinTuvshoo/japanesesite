@@ -308,11 +308,12 @@
 
   const QuizEngine={
     createQuiz({type,items,mode='mixed',count=10,level:levelFilter,onlyMistakes=false}={}){
-      const source=Array.isArray(items)?items.slice():LearningData.get(type).filter(x=>!levelFilter||x.level===levelFilter||Array.isArray(x.levels)&&x.levels.includes(levelFilter));
+      const catalog=LearningData.get(type).filter(x=>!levelFilter||x.level===levelFilter||Array.isArray(x.levels)&&x.levels.includes(levelFilter));
+      const pickedPool=Array.isArray(items)?items.filter(x=>catalog.some(y=>y.id===x.id)):catalog;
       const picked=onlyMistakes
-        ? source.filter(x=>LearningStore.mistakes(type).some(m=>m.id===x.id))
-        : shuffle(source);
-      return shuffle(picked).slice(0,Math.min(count,picked.length)).map(item=>this.buildQuestion(type,item,mode,source));
+        ? pickedPool.filter(x=>LearningStore.mistakes(type).some(m=>m.id===x.id))
+        : shuffle(pickedPool);
+      return shuffle(picked).slice(0,Math.min(count,picked.length)).map(item=>this.buildQuestion(type,item,mode,catalog));
     },
     buildQuestion(type,item,mode,source){
       if(type==='vocabulary'){
