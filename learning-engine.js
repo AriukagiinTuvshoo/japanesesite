@@ -371,18 +371,20 @@
     startActivity(activity){
       try{
         const next=['vocabulary','kanji','grammar','quiz','reading','listening','study'].includes(activity)?activity:'study';
-        if(typeof phase1StartedAt!=='undefined'&&phase1StartedAt&&typeof phase1ActiveActivity!=='undefined'&&phase1ActiveActivity!==next&&typeof startPhase1Session==='function'){
-          startPhase1Session();
-          startPhase1Session(next);
-        }else if(typeof phase1StartedAt!=='undefined'&&phase1StartedAt){
-          if(typeof setStudyActivity==='function')setStudyActivity(next);
+        if(typeof phase1StartedAt!=='undefined'&&typeof phase1Paused!=='undefined'&&(phase1StartedAt||phase1Paused)&&typeof startPhase1Session==='function'){
+          if((typeof phase1Paused!=='undefined'&&phase1Paused)|| (typeof phase1ActiveActivity!=='undefined'&&phase1ActiveActivity!==next)){
+            if(typeof stopPhase1Session==='function')stopPhase1Session();
+            startPhase1Session(next);
+          }else if(typeof setStudyActivity==='function'){
+            setStudyActivity(next);
+          }
         }else if(typeof startPhase1Session==='function'){
           startPhase1Session(next);
         }
       }catch{}
     },
     stopActivity(){
-      try{if(typeof phase1StartedAt!=='undefined'&&phase1StartedAt&&typeof startPhase1Session==='function')startPhase1Session();}catch{}
+      try{if(typeof phase1StartedAt!=='undefined'&&typeof phase1Paused!=='undefined'&&(phase1StartedAt||phase1Paused)&&typeof stopPhase1Session==='function')stopPhase1Session();}catch{}
       this.syncFromLegacy();
     }
   };
