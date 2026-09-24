@@ -51,8 +51,9 @@
     return out.slice(0,limit||10);
   }
   function moduleSummary(type){
-    var stats=LearningStore.stats(type);
-    return {total:stats.total,new:stats.counts.NEW,learning:stats.counts.LEARNING,familiar:stats.counts.FAMILIAR,weak:stats.counts.WEAK,mastered:stats.counts.MASTERED};
+    var counts={NEW:0,LEARNING:0,FAMILIAR:0,WEAK:0,MASTERED:0},items=LearningData.get(type);
+    items.forEach(function(item){var p=existingProgress(LearningStore.load(),type,item.id);var status=LearningStore.getStatus(p||{});counts[status]++;});
+    return {total:items.length,new:counts.NEW,learning:counts.LEARNING,familiar:counts.FAMILIAR,weak:counts.WEAK,mastered:counts.MASTERED};
   }
   function availableForLevel(type,level){
     var items=LearningData.get(type).filter(function(x){return x.level===level||Array.isArray(x.levels)&&x.levels.includes(level);});
