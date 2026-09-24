@@ -1,4 +1,4 @@
-const CACHE='nihongo-phase2-v4';
+const CACHE='nihongo-phase2.5-v5';
 const CORE=['./','./index.html','./style.css','./phase2.css','./app.js','./learning-engine.js','./learning-ui.js','./manifest.webmanifest','./icon.svg'];
 self.addEventListener('install',event=>event.waitUntil(caches.open(CACHE).then(cache=>cache.addAll(CORE)).then(()=>self.skipWaiting())));
 self.addEventListener('activate',event=>event.waitUntil(caches.keys().then(keys=>Promise.all(keys.filter(key=>key!==CACHE).map(key=>caches.delete(key)))).then(()=>self.clients.claim())));
