@@ -216,7 +216,7 @@
     },
     save(syncLegacy=true){
       this.state=normalizeState(this.state);
-      try{localStorage.setItem(this.key,JSON.stringify(this.state))}catch{}
+      storageSet(this.key,JSON.stringify(this.state));
       if(syncLegacy)this.syncToLegacy(false);
       return this.state;
     },
