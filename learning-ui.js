@@ -18,6 +18,23 @@
     return t(map[mode]||"practice");
   }
 
+  function ensureThemeControl(){
+    var actions=$(".top-actions");if(!actions||$("#theme-toggle"))return;
+    var button=document.createElement("button");
+    button.id="theme-toggle";button.type="button";button.className="icon-action theme-toggle";
+    button.setAttribute("aria-label",language==="ja"?"テーマを切り替え":language==="en"?"Toggle theme":"Загварыг солих");
+    button.setAttribute("title",button.getAttribute("aria-label"));
+    button.onclick=function(){
+      var next=document.documentElement.dataset.theme==="dark"?"light":"dark";
+      document.documentElement.dataset.theme=next;document.documentElement.style.colorScheme=next;
+      try{localStorage.setItem("nihongo-theme",next)}catch{}
+      button.textContent=next==="dark"?"☀":"☾";
+      button.setAttribute("aria-pressed",String(next==="dark"));
+    };
+    var current=document.documentElement.dataset.theme==="dark";
+    button.textContent=current?"☀":"☾";button.setAttribute("aria-pressed",String(current));
+    actions.insertBefore(button,actions.firstChild);
+  }
   function mount(){
     var placeholders=document.querySelector(".feature-placeholders");if(placeholders)placeholders.style.display="none";
     var home=$("#home");if(!home)return;
