@@ -6,7 +6,7 @@
  async function request(payload){
    var controller=new AbortController(),timer=setTimeout(function(){controller.abort();},30000);
    try{
-     var response=await fetch(endpoint,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload),signal:controller.signal,credentials:'same-origin'});
+     var response=await fetch(endpoint,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload),signal:controller.signal,credentials:'same-origin',cache:'no-store'});
      var text=await response.text(),data={};try{data=text?JSON.parse(text):{};}catch{data={};}
      if(!response.ok)throw makeError(data.code||'AI_HTTP_ERROR',data.message||'AI service error',response.status>=500||response.status===429);
      if(!data||typeof data.text!=='string'||!data.text.trim())throw makeError('AI_EMPTY_RESPONSE','AI先生から回答を受け取れませんでした。',true);
