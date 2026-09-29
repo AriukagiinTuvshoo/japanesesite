@@ -32,8 +32,10 @@ jobs:
           grep -RIn "create or replace function public.search_kanji" supabase/migrations
       - name: Secret scan
         run: |
-          if find . -type f -name '.env*' -not -path './.git/*' -print0 | xargs -0r grep -nE '(SUPABASE_SERVICE_ROLE_KEY|SUPABASE_ANON_KEY|AI_API_KEY|SUPABASE_DB_URL)[[:space:]]*=[[:space:]]*[^$[:space:]]' ; then
-            echo "Potential credential assignment found in an env file"
+          env_files=$(git ls-files | grep -E '(^|/)\\.env($|\\.)' || true)
+          if [ -n "$env_files" ]; then
+            echo "$env_files" | xargs grep -nE '(SUPABASE_SERVICE_ROLE_KEY|SUPABASE_ANON_KEY|AI_API_KEY|SUPABASE_DB_URL)[[:space:]]*=[[:space:]]*[^$[:space:]]'
+            echo "Potential credential assignment found in a tracked env file"
             exit 1
           fi
           if grep -RInE --exclude-dir=.git --exclude='PHASE3_5_QA.md' '(sk-[A-Za-z0-9]{20,}|ghp_[A-Za-z0-9]{20,}|-----BEGIN [A-Z ]*PRIVATE KEY-----)' .; then
