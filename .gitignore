@@ -1,0 +1,12 @@
+# secrets
+.env
+.env.local
+.env.*.local
+
+# downloaded corpora / generated normalized data
+data/source/
+data/normalized/
+
+# local runtime
+.DS_Store
+*.log
