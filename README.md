@@ -60,3 +60,10 @@ Phase 3.6 verified the repository state with direct Node runtime checks for the 
 ## Phase 3.7 — Vercel Deployment Recovery
 
 The Vercel project connection is now authorized for the `enhtvbshin2-5342` scope and the public production URL responds with HTTP 200. The current production deployment is on `main`; the `phase-3.5-production-qa` branch still needs its own preview deployment before browser E2E can be run against the Phase 3.7 code path.
+
+
+## Phase 2 — Production data foundation
+
+The repository now contains a Supabase/PostgreSQL content foundation with source provenance, import batches, explicit content lifecycle, JLPT classification candidates, editorial translation workflow, RLS, server-side search and repository services. See docs/PHASE2_DATA_FOUNDATION.md for setup and operational details.
+
+The existing LearningStore, QuizEngine, SRS behavior and AI context remain intact. Migration of the visual learning experience to remote repositories is intentionally deferred until Phase 3 — Vocabulary Studio.
