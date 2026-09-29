@@ -178,9 +178,8 @@ def kanjivg(cur,row,source_id,batch,version,license_,attribution,stats):
         stats["records_skipped"]+=1
         return
     kid=existing[0]; svg=str(row.get("svg","")); asset=str(row["source_id"])
-    paths=re.findall(r"<path\\b[^>]*?\\bd=[\\"']([^\\"']+)",svg)
-    if not paths:
-        paths=re.findall(r"<path[^>]*d=[\\"']([^\\"']+)",svg)
+    paths=re.findall(r'<path[^>]*\\bd="([^"]+)"', svg)
+    paths += re.findall(r"<path[^>]*\\bd='([^']+)'", svg)
     for n,path in enumerate(paths,1):
         cur.execute("""insert into public.kanji_strokes(kanji_id,source_id,source_asset_id,source_version,stroke_number,svg_path,svg_asset,status,import_batch_id)
                        values(%s,%s,%s,%s,%s,%s,%s,'approved',%s)
