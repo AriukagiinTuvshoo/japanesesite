@@ -202,7 +202,7 @@ def tatoeba(cur,row,source_id,batch,version,license_,attribution,stats):
     if nonempty(row.get("translation")):
         cur.execute("""insert into public.example_translations(example_sentence_id,source_translation_id,language,translation,source,source_version,license,attribution,status,import_batch_id)
                        values(%s,%s,%s,%s,'Tatoeba',%s,%s,%s,'pending_review',%s)""",
-                    (eid,str(row.get("translation_language") or ""),row.get("translation_language") or "",row["translation"],version,license_,attribution,batch))
+                    (eid,str(row.get("translation_sentence_id") or ""),row.get("translation_language") or "",row["translation"],version,license_,attribution,batch))
 
 def main():
     if psycopg is None: die("Install psycopg[binary]>=3.1")
