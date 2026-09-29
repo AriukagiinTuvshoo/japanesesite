@@ -179,6 +179,7 @@ def parse_tatoeba_links(path: Path, sentences: dict[str, dict]) -> Iterable[dict
                 "source": "Tatoeba",
                 "source_id": f"{left['id']}:{right['id']}",
                 "japanese_sentence_id": left["id"],
+                "translation_sentence_id": right["id"],
                 "japanese": left["text"],
                 "translation_language": right["lang"],
                 "translation": right["text"],
