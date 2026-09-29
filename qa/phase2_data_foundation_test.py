@@ -29,7 +29,7 @@ def test_pipeline_jmdict():
     xml='''<?xml version="1.0"?><JMdict><entry><ent_seq>100</ent_seq><k_ele><keb>食べる</keb></k_ele><r_ele><reb>たべる</reb></r_ele><sense><pos>v1</pos><gloss>to eat</gloss></sense></entry></JMdict>'''
     with tempfile.TemporaryDirectory() as d:
         src=Path(d)/'JMdict_e';src.write_text(xml,encoding='utf-8')
-        out=Path(d)/'out'
+        out=Path(d)/'out';out.mkdir()
         count=pipe.write_jsonl(out/'vocabulary.jsonl',pipe.parse_jmdict(src))
         row=json.loads((out/'vocabulary.jsonl').read_text(encoding='utf-8').splitlines()[0])
         assert_true(count==1,'JMDict parser count mismatch')
