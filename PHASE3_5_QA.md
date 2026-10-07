@@ -97,7 +97,7 @@ Timer and review scheduling were inspected at source level and were not rewritte
 
 Verified in source and CI:
 
-- cache: nihongo-phase3.5-v7
+- cache at the time of this Phase 3.6 report: nihongo-jlpt-studio-v12
 - static learning assets remain in the cache
 - /api/* bypasses the service-worker fetch handler
 - POST requests are not cached
@@ -150,3 +150,22 @@ The QA harness itself originally failed because its Node sandbox did not provide
 ## Release interpretation
 
 Source-level, direct runtime, and CI verification now provide substantial evidence that the Phase 3.5 code path is internally consistent. Production provider behavior, browser E2E, and deployment runtime remain unverified.
+
+
+## N2 exam-prep expansion follow-up — 2026-10-07
+
+The N2 prep additions were runtime-checked without changing the existing learning-state schema, review scheduler, quiz progress, or optional AI boundary.
+
+| Check | Result | Evidence |
+|---|---|---|
+| N2 content counts | PASS | 156 vocabulary entries, 76 grammar lessons, 24 reading items, 23 listening items; 36/35 reading/listening items across N5–N1 |
+| Format banks | PASS | Vocabulary/grammar banks cover six/three formats; the full simulation samples all five reading and all five listening formats |
+| Full-mock assembly | PASS | 85 original questions across Mongolian, English, and Japanese, with valid localized four-choice keys and 30/15/20/20 app allocation |
+| Reading text / kana | PASS | Selected mock reading lengths and kana/translations validated against approximate format-length targets |
+| Timed-section flow | PASS | 105-minute initial timer, 65-question transition, paused break, 50-minute Listening restart, elapsed-time accounting, both section timeouts, quit action, and final result recording exercised in the Node DOM/timer sandbox |
+| Smoke tests / syntax | PASS | `node qa/phase-3.5-smoke.cjs`, JavaScript `node --check` list, and manifest parse all pass |
+| Static asset / source checks | PASS | Local HTML assets resolve; `git diff --check` and the repository security scan pass |
+| Service-worker cache | UPDATED | `sw.js` now uses `nihongo-jlpt-studio-v14` and precaches the expanded N2 assets |
+| Browser/mobile E2E and device speech | NOT VERIFIED | No real browser/phone session was available; mobile layout, offline click-through, and the user’s device-specific Japanese TTS still need hands-on confirmation |
+
+The mock’s 85-question distribution is an app-designed approximation, not an exact official JLPT item-count replica. Its 105 + 50 minute timing follows the official N2 timing reference; all added questions and dialogue scripts are original, and listening uses device/browser text-to-speech rather than official audio.

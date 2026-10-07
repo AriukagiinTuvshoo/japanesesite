@@ -21,7 +21,7 @@ jobs:
         run: node qa/phase-3.5-smoke.cjs
       - name: JavaScript syntax
         run: |
-          for f in app.js learning-engine.js learning-ui.js ai-context.js ai-actions.js ai-provider.js ai-teacher.js sw.js api/ai.js; do
+          for f in app.js n2-expanded-content.js n2-advanced-content.js n2-exam-banks.js learning-engine.js learning-ui.js kana.js n2-library.js exam-prep.js pwa.js ai-context.js ai-actions.js ai-provider.js ai-teacher.js sw.js api/ai.js; do
             node --check "$f"
           done
       - name: Manifest validation
