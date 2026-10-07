@@ -1,12 +1,35 @@
 {
-  "name": "Nihongo — JLPT Japanese Study",
+  "name": "Nihongo — Japanese & JLPT Study Studio",
   "short_name": "Nihongo",
-  "description": "Japanese study tools in Mongolian, English and Japanese",
+  "description": "A Mongolian-first Japanese learning PWA with original N5–N1 JLPT study paths, reading, listening, timed practice and local progress.",
   "lang": "mn",
-  "start_url": "./",
+  "start_url": "./#dashboard",
   "scope": "./",
   "display": "standalone",
-  "background_color": "#f8f8f5",
-  "theme_color": "#f8f8f5",
-  "icons": [{"src":"icon.svg","sizes":"any","type":"image/svg+xml","purpose":"any maskable"}]
+  "display_override": ["standalone", "minimal-ui"],
+  "orientation": "portrait-primary",
+  "background_color": "#f6f5f0",
+  "theme_color": "#f6f5f0",
+  "categories": ["education", "books"],
+  "icons": [
+    { "src": "icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any maskable" },
+    { "src": "icon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any" }
+  ],
+  "shortcuts": [
+    {
+      "name": "JLPT Preparation",
+      "short_name": "JLPT",
+      "description": "Open level paths, skill practice and timed mini-mocks.",
+      "url": "./#jlpt",
+      "icons": [{ "src": "icon-192.png", "sizes": "192x192", "type": "image/png" }]
+    },
+    {
+      "name": "Kana Studio",
+      "short_name": "Kana",
+      "description": "Review hiragana and katakana.",
+      "url": "./#kana",
+      "icons": [{ "src": "icon-192.png", "sizes": "192x192", "type": "image/png" }]
+    }
+  ]
 }
